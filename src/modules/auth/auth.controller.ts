@@ -28,7 +28,7 @@ export class AuthController {
   public async signUp(@Body() dto: SignUpRequestDto): Promise<void> {
     return await this.authService.signUp(dto);
   }
-  
+
   @UseGuards(LocalAuthGuard)
   @Post(ERouteName.SIGNIN_ROUTE)
   @ApiOperation({ summary: AuthControllerDocStrings.operations.SIGNIN.summary })

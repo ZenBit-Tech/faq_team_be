@@ -6,7 +6,6 @@ import { ERouteName } from 'src/common/enums/route-name.enum';
 import { HttpExceptionFilter } from 'src/common/filters/httpException.filter';
 import { swgBuilderLabels } from 'src/utils/generalConstants';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
