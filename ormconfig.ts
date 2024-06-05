@@ -1,9 +1,10 @@
-import { DataSource } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { config } from 'dotenv';
 import * as path from 'path';
 import * as process from 'process';
-import { config } from 'dotenv';
-import { ConfigService } from '@nestjs/config';
-import { DB_TYPE } from './src/utils/constants';
+import { DataSource } from 'typeorm';
+
+import { DB_TYPE } from './src/utils/generalConstants';
 
 config();
 

@@ -8,12 +8,12 @@ import { BaseEntity } from './models/base.entity';
 @Entity(ETableName.USERS)
 export class UserEntity extends BaseEntity {
   @Column()
-  full_name: string;
+  user_name: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ default: false })
