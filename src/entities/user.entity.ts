@@ -13,7 +13,7 @@ export class UserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column({ select: false })
+  @Column({ select: false, nullable: true })
   password: string;
 
   @Column({ default: false })
@@ -25,7 +25,11 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   otp_code: string;
 
-  @Column({ type: 'enum', enum: EUserStatus, nullable: true })
+  @Column({
+    type: 'enum',
+    enum: EUserStatus,
+    default: EUserStatus.REGISTRATION,
+  })
   user_status: EUserStatus;
 
   @Column({ default: false })

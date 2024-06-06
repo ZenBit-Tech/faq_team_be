@@ -4,5 +4,7 @@ export enum ERouteName {
   SIGNUP_ROUTE = 'sign-up',
   USERS_ROUTE = 'users',
   USER_UPDATEBYID_ROUTE = 'update:id',
+  GOOGLE_ROUTE = 'google',
+  GOOGLE_REDIRECT = 'redirect',
   DOCS_ROUTE = 'api',
 }
