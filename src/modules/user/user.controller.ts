@@ -13,10 +13,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('User')
-@Controller(ERouteName.UPDATE_ROUTE)
+@Controller(ERouteName.USERS_ROUTE)
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Patch(':id')
+  @Patch(ERouteName.USER_UPDATEBYID_ROUTE)
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,

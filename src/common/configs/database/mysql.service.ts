@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import * as path from 'path';
 import * as process from 'process';
-import { DB_TYPE } from 'src/utils/constants';
+import { DB_TYPE } from 'src/utils/generalConstants';
 
 @Injectable()
 export class MysqlService implements TypeOrmOptionsFactory {
