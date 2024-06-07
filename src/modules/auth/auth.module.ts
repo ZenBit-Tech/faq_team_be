@@ -2,17 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { AuthController } from 'src/modules/auth/auth.controller';
 import { LocalStrategy } from 'src/modules/auth/local.strategy';
+import { AuthService } from 'src/modules/auth/services/auth.service';
+import { MailModule } from 'src/modules/mail/mail.module';
+import { UserModule } from 'src/modules/user/user.module';
 import { SIGNIN_EXPIRATION_TIME } from 'src/utils/generalConstants';
-
-import { MailModule } from '../mail/mail.module';
-import { UserModule } from '../user/user.module';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 
 @Module({
   imports: [
     UserModule,
+    MailModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

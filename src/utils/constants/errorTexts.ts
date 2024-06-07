@@ -4,6 +4,7 @@ export const AuthServiceErrors = {
     INVALID_CREDENTIALS: 'Invalid credentials',
     LOGIN: 'An error occurred while logging in',
     REGISTER: 'An error occurred while registering user',
+    ACCESS_TOKEN: 'An error occured when generating a new access token,',
   },
 };
 
