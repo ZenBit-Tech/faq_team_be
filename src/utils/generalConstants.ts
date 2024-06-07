@@ -11,3 +11,8 @@ export const swgBuilderLabels = {
   version: '1.0',
   tag: 'test',
 };
+
+export const otpGeneratorParams = {
+  pattern: '0',
+  length: 6,
+};
