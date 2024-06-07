@@ -9,6 +9,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import randomize from 'randomatic';
 import {
   AccesTokenDto,
   UserDto,
@@ -18,6 +19,9 @@ import {
   UsersServiceErrors,
 } from 'src/utils/constants/errorTexts';
 
+import { EMailTemplate } from '../mail/enums/mail-template.enum';
+import { ESubjectName } from '../mail/enums/subject-name.enum';
+import { MailService } from '../mail/mail.service';
 import { UserRepository } from '../repository/services/user.repository';
 import { UserService } from '../user/user.service';
 import { SignUpRequestDto } from './dto/request/sign-up.request.dto';
@@ -28,6 +32,7 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
     private jwtService: JwtService,
   ) {}
 
@@ -36,9 +41,18 @@ export class AuthService {
       await this.userService.isEmailUnique(dto.email);
       const salt = +this.configService.get('SALT');
       const hashedPassword = await bcrypt.hash(dto.password, salt);
-      await this.userRepository.save(
-        this.userRepository.create({ ...dto, password: hashedPassword }),
-      );
+      const otp = randomize('0', this.configService.get('OTP_LENGTH'));
+      await Promise.all([
+        await this.userRepository.save(
+          this.userRepository.create({ ...dto, password: hashedPassword }),
+        ),
+        await this.mailService.sendMail(
+          dto.email,
+          ESubjectName.VERIFY,
+          EMailTemplate.VERIFY,
+          { otp_code: otp, name: dto.user_name },
+        ),
+      ]);
     } catch (error) {
       if (
         error instanceof HttpException &&
