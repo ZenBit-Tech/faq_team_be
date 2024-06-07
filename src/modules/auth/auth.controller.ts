@@ -7,11 +7,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ERouteName } from 'src/common/enums/route-name.enum';
-import { SignUpRequestDto } from 'src/modules/auth/dto/request/sign-up.request.dto';
 import {
   AccesResponseDto,
   AuthReqDto,
-} from 'src/modules/auth/dto/response/sign-in.response.dto';
+} from 'src/modules/auth/dto/sign-in.response.dto';
+import { SignUpRequestDto } from 'src/modules/auth/dto/sign-up.request.dto';
 import { LocalAuthGuard } from 'src/modules/auth/local-auth.guard';
 import { AuthService } from 'src/modules/auth/services/auth.service';
 

@@ -1,10 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-
-import { EUserRole } from '../../entities/enums/user-role.enum';
-import { UserRepository } from '../repository/services/user.repository';
-import { SuperAdminConfig } from './types/super-admin.type';
+import { EUserRole } from 'src/entities/enums/user-role.enum';
+import { SuperAdminConfig } from 'src/modules/auth/types/super-admin.type';
+import { UserRepository } from 'src/modules/repository/services/user.repository';
 
 @Injectable()
 export class SuperAdminSeedService implements OnModuleInit {

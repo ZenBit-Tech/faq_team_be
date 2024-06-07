@@ -10,11 +10,11 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as randomize from 'randomatic';
-import { SignUpRequestDto } from 'src/modules/auth/dto/request/sign-up.request.dto';
 import {
   AccesResponseDto,
   UserDto,
-} from 'src/modules/auth/dto/response/sign-in.response.dto';
+} from 'src/modules/auth/dto/sign-in.response.dto';
+import { SignUpRequestDto } from 'src/modules/auth/dto/sign-up.request.dto';
 import { EMailTemplate } from 'src/modules/mail/enums/mail-template.enum';
 import { ESubjectName } from 'src/modules/mail/enums/subject-name.enum';
 import { MailService } from 'src/modules/mail/mail.service';
