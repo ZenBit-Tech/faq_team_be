@@ -4,14 +4,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as randomize from 'randomatic';
-import { UserDto } from 'src/modules/auth/dto/user.response.dto';
-
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
-import { otpGeneratorParams } from 'src/utils/generalConstants';
+import { UserDto } from 'src/modules/auth/dto/user.response.dto';
 import { EMailTemplate } from 'src/modules/mail/enums/mail-template.enum';
 import { ESubjectName } from 'src/modules/mail/enums/subject-name.enum';
 import { MailService } from 'src/modules/mail/mail.service';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
+import { otpGeneratorParams } from 'src/utils/generalConstants';
 
 @Injectable()
 export class OtpService {
