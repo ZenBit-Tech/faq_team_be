@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-
-import { UserRepository } from './services/user.repository';
+import { UserRepository } from 'src/modules//repository/services/user.repository';
 
 const repositories = [UserRepository];
 

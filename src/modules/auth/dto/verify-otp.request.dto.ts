@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Length } from 'class-validator';
-
-import { otpGeneratorParams } from '../../../utils/generalConstants';
-import { SendOtpRequestDto } from './send-otp.request.dto';
+import { SendOtpRequestDto } from 'src/modules/auth/dto/send-otp.request.dto';
+import { otpGeneratorParams } from 'src/utils/generalConstants';
 
 export class VerifyOtpRequestDto extends SendOtpRequestDto {
   @ApiProperty()

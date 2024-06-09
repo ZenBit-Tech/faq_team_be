@@ -1,9 +1,8 @@
+import { ETableName } from 'src/common/enums/table-name.enum';
+import { EUserRole } from 'src/common/enums/user-role.enum';
+import { EUserStatus } from 'src/common/enums/user-status.enum';
+import { BaseEntity } from 'src/entities/models/base.entity';
 import { Column, Entity } from 'typeorm';
-
-import { ETableName } from '../common/enums/table-name.enum';
-import { EUserRole } from '../common/enums/user-role.enum';
-import { EUserStatus } from '../common/enums/user-status.enum';
-import { BaseEntity } from './models/base.entity';
 
 @Entity(ETableName.USERS)
 export class UserEntity extends BaseEntity {

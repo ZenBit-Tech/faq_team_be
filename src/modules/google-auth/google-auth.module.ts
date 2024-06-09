@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { GoogleStrategy } from './google.strategy';
-import { GoogleAuthController } from './google-auth.controller';
-import { GoogleAuthService } from './google-auth.service';
+import { GoogleStrategy } from 'src/modules/google-auth/google.strategy';
+import { GoogleAuthController } from 'src/modules/google-auth/google-auth.controller';
+import { GoogleAuthService } from 'src/modules/google-auth/google-auth.service';
 
 @Module({
   imports: [],

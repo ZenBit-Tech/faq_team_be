@@ -3,12 +3,11 @@ import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-
-import { ERouteName } from '../../common/enums/route-name.enum';
-import { GOOGLE_REGISTR_RES } from '../../utils/generalConstants';
-import { EGoogLeAuthAction } from './enums/google-auth-action.enum';
-import { GoogleAuthService } from './google-auth.service';
-import { IGoogleAuth } from './interfaces/google.interfaces';
+import { ERouteName } from 'src/common/enums/route-name.enum';
+import { EGoogLeAuthAction } from 'src/modules/google-auth/enums/google-auth-action.enum';
+import { GoogleAuthService } from 'src/modules/google-auth/google-auth.service';
+import { IGoogleAuth } from 'src/modules/google-auth/interfaces/google.interfaces';
+import { GOOGLE_REGISTR_RES } from 'src/utils/generalConstants';
 
 @ApiTags('Authorization via Google')
 @Controller(ERouteName.GOOGLE_ROUTE)

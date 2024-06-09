@@ -4,14 +4,14 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as randomize from 'randomatic';
+import { UserDto } from 'src/modules/auth/dto/user.response.dto';
 
-import { EErrorMessage } from '../../../common/enums/error-message.enum';
-import { UserEntity } from '../../../entities/user.entity';
-import { otpGeneratorParams } from '../../../utils/generalConstants';
-import { EMailTemplate } from '../../mail/enums/mail-template.enum';
-import { ESubjectName } from '../../mail/enums/subject-name.enum';
-import { MailService } from '../../mail/mail.service';
-import { UserRepository } from '../../repository/services/user.repository';
+import { EErrorMessage } from 'src/common/enums/error-message.enum';
+import { otpGeneratorParams } from 'src/utils/generalConstants';
+import { EMailTemplate } from 'src/modules/mail/enums/mail-template.enum';
+import { ESubjectName } from 'src/modules/mail/enums/subject-name.enum';
+import { MailService } from 'src/modules/mail/mail.service';
+import { UserRepository } from 'src/modules/repository/services/user.repository';
 
 @Injectable()
 export class OtpService {
@@ -45,7 +45,7 @@ export class OtpService {
     ]);
   }
 
-  public async verifyOtp(email: string, otp_code: string): Promise<UserEntity> {
+  public async verifyOtp(email: string, otp_code: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({ email });
 
     if (!user) {

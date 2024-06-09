@@ -10,10 +10,9 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ERouteName } from 'src/common/enums/route-name.enum';
-
-import { JwtAuthGuard } from '../auth/guards/jwtAuthGuard';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserService } from './user.service';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
+import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { UserService } from 'src/modules/user/user.service';
 
 @ApiTags('User')
 @Controller(ERouteName.USERS_ROUTE)

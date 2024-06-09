@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-
-import { UserRepository } from '../repository/services/user.repository';
-import { EGoogLeAuthAction } from './enums/google-auth-action.enum';
-import { IGoogleAuth, IGoogleAuthRes } from './interfaces/google.interfaces';
+import { EGoogLeAuthAction } from 'src/modules/google-auth/enums/google-auth-action.enum';
+import {
+  IGoogleAuth,
+  IGoogleAuthRes,
+} from 'src/modules/google-auth/interfaces/google.interfaces';
+import { UserRepository } from 'src/modules/repository/services/user.repository';
+import { COOKIES_AGE } from 'src/utils/generalConstants';
 
 @Injectable()
 export class GoogleAuthService {
@@ -69,7 +72,7 @@ export class GoogleAuthService {
     );
 
     res.cookie('access_token', accessToken, {
-      maxAge: 2592000000, // 30 days in milliseconds
+      maxAge: COOKIES_AGE,
       sameSite: true,
       secure: false, // Set to true if using HTTPS in production
     });

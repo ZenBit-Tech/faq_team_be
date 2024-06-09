@@ -7,18 +7,17 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ERouteName } from 'src/common/enums/route-name.enum';
+import { SendOtpRequestDto } from 'src/modules/auth/dto/send-otp.request.dto';
 import {
   AccesResponseDto,
   AuthReqDto,
 } from 'src/modules/auth/dto/sign-in.response.dto';
 import { SignUpRequestDto } from 'src/modules/auth/dto/sign-up.request.dto';
+import { UserDto } from 'src/modules/auth/dto/user.response.dto';
+import { VerifyOtpRequestDto } from 'src/modules/auth/dto/verify-otp.request.dto';
+import { LocalAuthGuard } from 'src/modules/auth/guards/local-auth.guard';
 import { AuthService } from 'src/modules/auth/services/auth.service';
-
-import { UserEntity } from '../../entities/user.entity';
-import { SendOtpRequestDto } from './dto/send-otp.request.dto';
-import { VerifyOtpRequestDto } from './dto/verify-otp.request.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-import { OtpService } from './services/otp.service';
+import { OtpService } from 'src/modules/auth/services/otp.service';
 
 @ApiTags('Authorization')
 @Controller(ERouteName.AUTH_ROUTE)
@@ -60,7 +59,7 @@ export class AuthController {
 
   @Post(ERouteName.VERIFY_OTP)
   @ApiOperation({ summary: 'Verify provided otp code' })
-  async verifyOtp(@Body() dto: VerifyOtpRequestDto): Promise<UserEntity> {
+  async verifyOtp(@Body() dto: VerifyOtpRequestDto): Promise<UserDto> {
     return await this.otpService.verifyOtp(dto.email, dto.otp_code);
   }
 }

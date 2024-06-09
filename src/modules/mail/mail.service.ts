@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
-
-import { EMailTemplate } from './enums/mail-template.enum';
-import { ESubjectName } from './enums/subject-name.enum';
+import { EMailTemplate } from 'src/modules/mail/enums/mail-template.enum';
+import { ESubjectName } from 'src/modules/mail/enums/subject-name.enum';
 
 @Injectable()
 export class MailService {

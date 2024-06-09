@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-
-import { EErrorMessage } from '../../common/enums/error-message.enum';
-import { UserEntity } from '../../entities/user.entity';
-import { UserRepository } from '../repository/services/user.repository';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { EErrorMessage } from 'src/common/enums/error-message.enum';
+import { UserEntity } from 'src/entities/user.entity';
+import { UserRepository } from 'src/modules/repository/services/user.repository';
+import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 
 @Injectable()
 export class UserService {
