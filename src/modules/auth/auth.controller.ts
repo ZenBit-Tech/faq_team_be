@@ -52,13 +52,13 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @Post('/send-otp')
+  @Post(ERouteName.SEND_OTP)
   @ApiOperation({ summary: 'Send otp code to provided email' })
   async restorePassword(@Body() dto: SendOtpRequestDto): Promise<void> {
     return await this.otpService.sendOtp(dto.email);
   }
 
-  @Post('/verify-otp')
+  @Post(ERouteName.VERIFY_OTP)
   @ApiOperation({ summary: 'Verify provided otp code' })
   async verifyOtp(@Body() dto: VerifyOtpRequestDto): Promise<UserEntity> {
     return await this.otpService.verifyOtp(dto.email, dto.otp_code);
