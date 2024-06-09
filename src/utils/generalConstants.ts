@@ -5,6 +5,8 @@ export const TEST_MODULE_ROUTE = 'testEntity';
 
 export const SIGNIN_EXPIRATION_TIME = '60m';
 
+export const GOOGLE_REGISTR_RES = '/faq_team_fe/confirm-credentials?token=';
+
 export const swgBuilderLabels = {
   title: 'Black-circle',
   description: 'The black-circle app API description',

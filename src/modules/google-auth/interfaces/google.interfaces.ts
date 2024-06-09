@@ -8,3 +8,8 @@ export interface IGoogleUser {
   lastName: string;
   accessToken: string;
 }
+
+export interface IGoogleAuthRes {
+  accessToken: string;
+  authAction: string;
+}

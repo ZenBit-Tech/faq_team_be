@@ -8,13 +8,14 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
-import { EUserStatus } from 'src/entities/enums/user-status.enum';
+
+import { EUserStatus } from '../../../common/enums/user-status.enum';
 
 export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  user_name: string;
+  full_name: string;
 
   @ApiProperty()
   @IsOptional()

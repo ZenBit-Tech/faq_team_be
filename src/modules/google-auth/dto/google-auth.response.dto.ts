@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { EGoogLeAuthAction } from '../../enums/google-auth-action.enum';
+import { EGoogLeAuthAction } from '../enums/google-auth-action.enum';
 
 export class GoogleAuthResponseDto {
   @ApiProperty()

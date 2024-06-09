@@ -1,8 +1,8 @@
 import { Column, Entity } from 'typeorm';
 
-import { ETableName } from './enums/table-name.enum';
-import { EUserRole } from './enums/user-role.enum';
-import { EUserStatus } from './enums/user-status.enum';
+import { ETableName } from '../common/enums/table-name.enum';
+import { EUserRole } from '../common/enums/user-role.enum';
+import { EUserStatus } from '../common/enums/user-status.enum';
 import { BaseEntity } from './models/base.entity';
 
 @Entity(ETableName.USERS)
@@ -26,8 +26,6 @@ export class UserEntity extends BaseEntity {
   otp_code: string;
 
   @Column({
-    type: 'enum',
-    enum: EUserStatus,
     default: EUserStatus.REGISTRATION,
   })
   user_status: EUserStatus;
@@ -35,7 +33,7 @@ export class UserEntity extends BaseEntity {
   @Column({ default: false })
   is_deleted_by_admin: boolean;
 
-  @Column({ type: 'enum', enum: EUserRole, nullable: true })
+  @Column({ nullable: true })
   user_role: EUserRole;
 
   @Column({ nullable: true })

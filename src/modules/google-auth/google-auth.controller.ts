@@ -1,23 +1,22 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiExtraModels,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-  refs,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { ERouteName } from '../../common/enums/route-name.enum';
-import { GoogleAuthResponseDto } from './dto/response/google-auth.response.dto';
+import { GOOGLE_REGISTR_RES } from '../../utils/generalConstants';
+import { EGoogLeAuthAction } from './enums/google-auth-action.enum';
 import { GoogleAuthService } from './google-auth.service';
 import { IGoogleAuth } from './interfaces/google.interfaces';
 
 @ApiTags('Authorization via Google')
 @Controller(ERouteName.GOOGLE_ROUTE)
 export class GoogleAuthController {
-  constructor(private readonly googleAuthService: GoogleAuthService) {}
+  constructor(
+    private readonly googleAuthService: GoogleAuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @ApiOperation({
     summary:
@@ -30,14 +29,19 @@ export class GoogleAuthController {
   @ApiOperation({ summary: 'Register or login via google' })
   @Get(ERouteName.GOOGLE_REDIRECT)
   @UseGuards(AuthGuard('google'))
-  @ApiExtraModels(GoogleAuthResponseDto)
-  @ApiOkResponse({
-    schema: { anyOf: refs(GoogleAuthResponseDto) },
-  })
   async googleAuthRedirect(
     @Req() req: IGoogleAuth,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<GoogleAuthResponseDto> {
-    return await this.googleAuthService.googleLogin(req, res);
+  ): Promise<void> {
+    const { accessToken, authAction } = await this.googleAuthService.googleAuth(
+      req,
+      res,
+    );
+
+    authAction === EGoogLeAuthAction.SIGNUP
+      ? res.redirect(
+          `${this.configService.get<string>('FRONT_URL')}${GOOGLE_REGISTR_RES}${accessToken}`,
+        )
+      : res.redirect(`${this.configService.get<string>('FRONT_URL')}`);
   }
 }

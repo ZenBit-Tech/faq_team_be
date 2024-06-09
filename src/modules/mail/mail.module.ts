@@ -11,15 +11,15 @@ import { MailService } from './mail.service';
     MailerModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          host: configService.get('MAIL_HOST'),
+          host: configService.get<string>('MAIL_HOST'),
           secure: false,
           auth: {
-            user: configService.get('MAIL_USER'),
-            pass: configService.get('MAIL_PASSWORD'),
+            user: configService.get<string>('MAIL_USER'),
+            pass: configService.get<string>('MAIL_PASSWORD'),
           },
         },
         defaults: {
-          from: configService.get('MAIL_FROM'),
+          from: configService.get<string>('MAIL_FROM'),
         },
         template: {
           dir: path.join(__dirname, 'templates'),

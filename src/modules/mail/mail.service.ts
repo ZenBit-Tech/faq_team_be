@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
 
@@ -18,23 +18,12 @@ export class MailService {
     template: EMailTemplate,
     context: Record<string, string | number> = {},
   ): Promise<void> {
-    try {
-      await this.mailerService.sendMail({
-        to: recipient,
-        from: this.configService.get('MAIL_USER'),
-        subject,
-        template,
-        context,
-      });
-    } catch (error) {
-      if (
-        error instanceof HttpException &&
-        error.getStatus() === HttpStatus.BAD_REQUEST
-      ) {
-        throw error;
-      }
-
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    await this.mailerService.sendMail({
+      to: recipient,
+      from: this.configService.get<string>('MAIL_USER'),
+      subject,
+      template,
+      context,
+    });
   }
 }

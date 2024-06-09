@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -12,13 +12,21 @@ import {
   AuthReqDto,
 } from 'src/modules/auth/dto/sign-in.response.dto';
 import { SignUpRequestDto } from 'src/modules/auth/dto/sign-up.request.dto';
-import { LocalAuthGuard } from 'src/modules/auth/local-auth.guard';
 import { AuthService } from 'src/modules/auth/services/auth.service';
+
+import { UserEntity } from '../../entities/user.entity';
+import { SendOtpRequestDto } from './dto/send-otp.request.dto';
+import { VerifyOtpRequestDto } from './dto/verify-otp.request.dto';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { OtpService } from './services/otp.service';
 
 @ApiTags('Authorization')
 @Controller(ERouteName.AUTH_ROUTE)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly otpService: OtpService,
+  ) {}
   @ApiOperation({ summary: 'Register new user' })
   @ApiResponse({
     status: 201,
@@ -40,7 +48,19 @@ export class AuthController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  async login(@Request() { user }: AuthReqDto): Promise<AccesResponseDto> {
+  async login(@Req() { user }: AuthReqDto): Promise<AccesResponseDto> {
     return this.authService.login(user);
+  }
+
+  @Post('/send-otp')
+  @ApiOperation({ summary: 'Send otp code to provided email' })
+  async restorePassword(@Body() dto: SendOtpRequestDto): Promise<void> {
+    return await this.otpService.sendOtp(dto.email);
+  }
+
+  @Post('/verify-otp')
+  @ApiOperation({ summary: 'Verify provided otp code' })
+  async verifyOtp(@Body() dto: VerifyOtpRequestDto): Promise<UserEntity> {
+    return await this.otpService.verifyOtp(dto.email, dto.otp_code);
   }
 }
