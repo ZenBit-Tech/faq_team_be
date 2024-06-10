@@ -48,7 +48,7 @@ export class AuthController {
     description: 'Internal server error',
   })
   async login(@Req() { user }: AuthReqDto): Promise<AccesResponseDto> {
-    return this.authService.login(user);
+    return this.authService.login(user.email, user.id, user.is_verified);
   }
 
   @Post(ERouteName.SEND_OTP)

@@ -85,8 +85,12 @@ export class AuthService {
     return user;
   }
 
-  async login(user: UserDto): Promise<AccesResponseDto> {
-    const payload = { email: user.email, id: user.id };
+  async login(
+    email: string,
+    id: string,
+    is_verified: boolean,
+  ): Promise<AccesResponseDto> {
+    const payload = { email, id };
     const newAccessToken = this.jwtService.sign(payload);
 
     if (!newAccessToken) {
@@ -94,11 +98,10 @@ export class AuthService {
         AuthServiceErrors.errors.ACCESS_TOKEN,
       );
     }
-    console.log(newAccessToken);
 
     return {
       access_token: newAccessToken,
-      is_verified: user.is_verified,
+      is_verified,
     };
   }
 }
