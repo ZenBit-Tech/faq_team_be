@@ -10,6 +10,7 @@ import { swgBuilderLabels } from 'src/utils/generalConstants';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   const configService = app.get(ConfigService);
+
   app.useGlobalFilters(new HttpExceptionFilter());
 
   app.use(cookieParser());
@@ -19,9 +20,21 @@ async function bootstrap() {
     .setDescription(swgBuilderLabels.description)
     .setVersion(swgBuilderLabels.version)
     .addTag(swgBuilderLabels.tag)
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      in: 'header',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(ERouteName.DOCS_ROUTE, app, document);
+  SwaggerModule.setup(ERouteName.DOCS_ROUTE, app, document, {
+    swaggerOptions: {
+      docExpansion: 'list',
+      defaultModelExpandDepth: 3,
+      persistAuthorization: true,
+    },
+  });
 
   const port = configService.get<number>('SERVER_PORT');
   await app.listen(port);

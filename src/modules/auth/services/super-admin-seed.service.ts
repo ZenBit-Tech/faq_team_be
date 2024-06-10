@@ -1,13 +1,14 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-import { EUserRole } from 'src/entities/enums/user-role.enum';
+import { EUserRole } from 'src/common/enums/user-role.enum';
 import { SuperAdminConfig } from 'src/modules/auth/types/super-admin.type';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
 
 @Injectable()
 export class SuperAdminSeedService implements OnModuleInit {
   private superAdminConfig: SuperAdminConfig;
+
   constructor(
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
@@ -18,10 +19,12 @@ export class SuperAdminSeedService implements OnModuleInit {
       password: this.configService.get<string>('ADMIN_PASSWORD'),
     };
   }
+
   async onModuleInit(): Promise<void> {
     const isExist = await this.userRepository.findOneBy({
       email: this.superAdminConfig.email,
     });
+
     if (isExist) {
       return;
     }
@@ -37,6 +40,7 @@ export class SuperAdminSeedService implements OnModuleInit {
         email: this.superAdminConfig.email,
         password: hashedPassword,
         user_role: EUserRole.SUPERADMIN,
+        is_verified: true,
       }),
     );
   }
