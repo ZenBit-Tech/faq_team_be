@@ -19,7 +19,10 @@ export class ReviewService {
     });
   }
 
-  public async createReview(reviewer: string, dto: MakeReviewRequestDto) {
+  public async createReview(
+    reviewer: string,
+    dto: MakeReviewRequestDto,
+  ): Promise<void> {
     await this.userService.isUserExist(dto.review_target_id);
 
     await this.reviewRepository.save(
