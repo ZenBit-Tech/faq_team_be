@@ -33,7 +33,7 @@ export class UserController {
     private readonly reviewService: ReviewService,
   ) {}
 
-  @Get('/user/:id')
+  @Get(ERouteName.GET_USER)
   async getUser(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity> {
     return await this.userService.getFullInfo(id);
   }
@@ -52,14 +52,14 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('rate/:id')
+  @Post(ERouteName.RATE_USER)
   async rateUser(@Req() { user }, @Body() dto: RateRequestDto): Promise<void> {
     return await this.rateService.rateUser(user.userId, dto);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('/user/make-review')
+  @Post(ERouteName.MAKE_REVIEW)
   async makeReview(
     @Req() { user },
     @Body() dto: MakeReviewRequestDto,
@@ -69,14 +69,14 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('/user/reviews')
+  @Get(ERouteName.GET_REVIEWS)
   async getReviews(@Req() { user }): Promise<ReviewEntity[]> {
     return await this.reviewService.getReviews(user.userId);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete('/user/review/:id')
+  @Delete(ERouteName.DELETE_REVIEW)
   async deleteReview(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return await this.reviewService.deleteReview(id);
   }
