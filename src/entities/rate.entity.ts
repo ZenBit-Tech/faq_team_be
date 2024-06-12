@@ -20,5 +20,5 @@ export class RateEntity extends BaseEntity {
   rate_target_id: string;
   @ManyToOne(() => UserEntity, (entity) => entity.rate_targets)
   @JoinColumn({ name: 'rate_target_id' })
-  rate_targets?: UserEntity;
+  rate_target?: UserEntity;
 }
