@@ -1,8 +1,11 @@
-import { ETableName } from 'src/common/enums/table-name.enum';
-import { EUserRole } from 'src/common/enums/user-role.enum';
-import { EUserStatus } from 'src/common/enums/user-status.enum';
-import { BaseEntity } from 'src/entities/models/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+
+import { ETableName } from '../common/enums/table-name.enum';
+import { EUserRole } from '../common/enums/user-role.enum';
+import { EUserStatus } from '../common/enums/user-status.enum';
+import { BaseEntity } from './models/base.entity';
+import { RateEntity } from './rate.entity';
+import { ReviewEntity } from './review.entity';
 
 @Entity(ETableName.USERS)
 export class UserEntity extends BaseEntity {
@@ -61,4 +64,16 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: true })
   shoes_size: number;
+
+  @OneToMany(() => RateEntity, (entity) => entity.rates)
+  rates?: RateEntity[];
+
+  @OneToMany(() => RateEntity, (entity) => entity.rate_target_id)
+  rate_targets?: RateEntity[];
+
+  @OneToMany(() => ReviewEntity, (entity) => entity.review_target)
+  review_targets?: ReviewEntity[];
+
+  @OneToMany(() => ReviewEntity, (entity) => entity.author)
+  user_reviews?: ReviewEntity[];
 }

@@ -13,6 +13,11 @@ export class UserService {
     private readonly configService: ConfigService,
   ) {}
 
+  public async getFullInfo(id: string): Promise<UserEntity> {
+    await this.isUserExist(id);
+    return await this.userRepository.getFullInfo(id);
+  }
+
   public async isUserExist(userId: string): Promise<UserEntity> {
     const user = await this.userRepository.findOneBy({ id: userId });
 

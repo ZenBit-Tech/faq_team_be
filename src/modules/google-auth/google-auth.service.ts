@@ -46,7 +46,7 @@ export class GoogleAuthService {
       accessToken = this.jwtService.sign(
         {
           email: user.email,
-          user_id: user.id,
+          id: user.id,
         },
         { secret, expiresIn },
       );
@@ -66,7 +66,7 @@ export class GoogleAuthService {
     accessToken = this.jwtService.sign(
       {
         email: isUser.email,
-        user_id: isUser.id,
+        id: isUser.id,
       },
       { secret, expiresIn },
     );
