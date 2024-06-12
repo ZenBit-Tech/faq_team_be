@@ -17,7 +17,6 @@ import { ERouteName } from 'src/common/enums/route-name.enum';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
-import { DeleteReviewRequestDto } from 'src/modules/user/dto/delete-review.request.dto';
 import { MakeReviewRequestDto } from 'src/modules/user/dto/make-review.request.dto';
 import { RateRequestDto } from 'src/modules/user/dto/rate.request.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
@@ -77,10 +76,8 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete('/user/reviews')
-  async deleteReview(
-    @Body() dto: DeleteReviewRequestDto,
-  ): Promise<ReviewEntity[]> {
-    return await this.reviewService.getReviews(dto.id);
+  @Delete('/user/review/:id')
+  async deleteReview(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    return await this.reviewService.deleteReview(id);
   }
 }
