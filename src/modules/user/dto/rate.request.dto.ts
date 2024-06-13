@@ -5,7 +5,7 @@ import { IsNumber, IsString } from 'class-validator';
 export class RateRequestDto {
   @ApiProperty()
   @IsString()
-  id: string;
+  rate_target_id: string;
 
   @ApiProperty()
   @Transform(({ value }) => parseInt(value))

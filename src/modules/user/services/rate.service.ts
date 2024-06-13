@@ -12,10 +12,13 @@ export class RateService {
   ) {}
 
   public async rateUser(rater: string, dto: RateRequestDto): Promise<void> {
-    await this.userRepository.findOneBy({ id: dto.id });
+    const { rate, rate_target_id } = dto;
+
+    await this.userRepository.findOneBy({ id: rate_target_id });
+
     const isRated = await this.rateRepository.findOneBy({
       rater,
-      rate_target_id: dto.id,
+      rate_target_id,
     });
 
     if (isRated) {
@@ -25,8 +28,8 @@ export class RateService {
     await this.rateRepository.save(
       this.rateRepository.create({
         rater,
-        rate_target_id: dto.id,
-        rate: dto.rate,
+        rate_target_id,
+        rate,
       }),
     );
   }

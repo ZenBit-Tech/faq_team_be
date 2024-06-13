@@ -27,7 +27,7 @@ export class ReviewService {
 
     await this.reviewRepository.save(
       this.reviewRepository.create({
-        review_body: dto.body,
+        review_text: dto.review_text,
         reviewer_id: reviewer,
         review_target_id: dto.review_target_id,
       }),

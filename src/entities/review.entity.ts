@@ -7,7 +7,7 @@ import { UserEntity } from './user.entity';
 @Entity(ETableName.REVIEWS)
 export class ReviewEntity extends BaseEntity {
   @Column()
-  review_body: string;
+  review_text: string;
 
   @Column()
   reviewer_id: string;

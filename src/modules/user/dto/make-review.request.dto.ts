@@ -8,5 +8,5 @@ export class MakeReviewRequestDto {
 
   @ApiProperty()
   @IsString()
-  body: string;
+  review_text: string;
 }
