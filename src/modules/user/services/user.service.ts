@@ -4,7 +4,9 @@ import * as bcrypt from 'bcrypt';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { FindOptionsWhere, Like } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -57,6 +59,36 @@ export class UserService {
       user.password = hashedPassword;
     }
 
-    await this.userRepository.update(id, dtoWithoutPassword);
+    await this.userRepository.update(id, {
+      password: user.password,
+      ...dtoWithoutPassword,
+    });
+  }
+
+  public async getAllUsers(dto: UsersFilterDto) {
+    const { page = 1, limit = 5, order = 'ASC', search = '' } = dto;
+    const conditions:
+      | FindOptionsWhere<UserEntity>
+      | FindOptionsWhere<UserEntity>[] = search
+      ? [{ full_name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }]
+      : {};
+
+    const [users, totalCount] = await this.userRepository.findAndCount({
+      where: conditions,
+      order: { full_name: order },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return { totalCount, users };
+  }
+
+  public async getUser(id: string): Promise<UserEntity> {
+    return await this.isUserExist(id);
+  }
+
+  public async softDelete(id: string): Promise<void> {
+    const user = await this.isUserExist(id);
+    user.is_deleted_by_admin = true;
+    await this.userRepository.save(user);
   }
 }
