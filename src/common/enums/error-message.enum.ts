@@ -3,4 +3,5 @@ export enum EErrorMessage {
   EMAIL_ALREADY_EXIST = 'Such email alredy exist',
   OTP_INCORRECT = 'Provided code is incorrect',
   MAIL_FAILED = 'Email with code was not send',
+  ALREADY_RATED = 'You already rate this user',
 }

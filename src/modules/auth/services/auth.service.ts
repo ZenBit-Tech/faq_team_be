@@ -17,7 +17,7 @@ import { EMailTemplate } from 'src/modules/mail/enums/mail-template.enum';
 import { ESubjectName } from 'src/modules/mail/enums/subject-name.enum';
 import { MailService } from 'src/modules/mail/mail.service';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
-import { UserService } from 'src/modules/user/user.service';
+import { UserService } from 'src/modules/user/services/user.service';
 import {
   AuthServiceErrors,
   UsersServiceErrors,
