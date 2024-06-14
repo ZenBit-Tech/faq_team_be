@@ -68,7 +68,7 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => RateEntity, (entity) => entity.rates)
   rates?: RateEntity[];
 
-  @OneToMany(() => RateEntity, (entity) => entity.rate_target_id)
+  @OneToMany(() => RateEntity, (entity) => entity.user_target_id)
   rate_targets?: RateEntity[];
 
   @OneToMany(() => ReviewEntity, (entity) => entity.review_target)

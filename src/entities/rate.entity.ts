@@ -11,14 +11,14 @@ export class RateEntity extends BaseEntity {
   rate: number;
 
   @Column()
-  rater: string;
+  rater_id: string;
   @ManyToOne(() => UserEntity, (entity) => entity.rates)
   @JoinColumn({ name: 'rater' })
   rates?: UserEntity;
 
   @Column()
-  rate_target_id: string;
+  user_target_id: string;
   @ManyToOne(() => UserEntity, (entity) => entity.rate_targets)
   @JoinColumn({ name: 'rate_target_id' })
-  rate_target?: UserEntity;
+  user_target?: UserEntity;
 }

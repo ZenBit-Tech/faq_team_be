@@ -18,7 +18,7 @@ import { ReviewEntity } from 'src/entities/review.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
 import { MakeReviewRequestDto } from 'src/modules/user/dto/make-review.request.dto';
-import { RateRequestDto } from 'src/modules/user/dto/rate.request.dto';
+import { RateRequestDto } from 'src/modules/user/dto/rate-request.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';

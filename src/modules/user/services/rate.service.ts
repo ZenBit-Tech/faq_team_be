@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { RateRepository } from 'src/modules/repository/services/rate.repository';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
-import { RateRequestDto } from 'src/modules/user/dto/rate.request.dto';
+import { RateRequestDto } from 'src/modules/user/dto/rate-request.dto';
 
 @Injectable()
 export class RateService {
@@ -11,14 +11,14 @@ export class RateService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  public async rateUser(rater: string, dto: RateRequestDto): Promise<void> {
-    const { rate, rate_target_id } = dto;
+  public async rateUser(rater_id: string, dto: RateRequestDto): Promise<void> {
+    const { rate, user_target_id } = dto;
 
-    await this.userRepository.findOneBy({ id: rate_target_id });
+    await this.userRepository.findOneBy({ id: user_target_id });
 
     const isRated = await this.rateRepository.findOneBy({
-      rater,
-      rate_target_id,
+      rater_id,
+      user_target_id,
     });
 
     if (isRated) {
@@ -27,8 +27,8 @@ export class RateService {
 
     await this.rateRepository.save(
       this.rateRepository.create({
-        rater,
-        rate_target_id,
+        rater_id,
+        user_target_id,
         rate,
       }),
     );
