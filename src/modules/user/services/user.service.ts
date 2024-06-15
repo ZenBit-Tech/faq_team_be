@@ -7,13 +7,17 @@ import { UserRepository } from 'src/modules/repository/services/user.repository'
 import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { FindOptionsWhere, Like } from 'typeorm';
-
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
   ) {}
+
+  public async getFullInfo(id: string): Promise<UserEntity> {
+    await this.isUserExist(id);
+    return await this.userRepository.getFullInfo(id);
+  }
 
   public async isUserExist(userId: string): Promise<UserEntity> {
     const user = await this.userRepository.findOneBy({ id: userId });
@@ -90,5 +94,6 @@ export class UserService {
     const user = await this.isUserExist(id);
     user.is_deleted_by_admin = true;
     await this.userRepository.save(user);
+
   }
 }

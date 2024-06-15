@@ -8,6 +8,8 @@ export const SIGNIN_EXPIRATION_TIME = '60m';
 export const GOOGLE_REGISTR_RES = '/faq_team_fe/confirm-credentials?token=';
 export const COOKIES_AGE = 2592000000; // 30 days in milliseconds
 
+export const DEFAULT_USER_RATE = 5;
+
 export const swgBuilderLabels = {
   title: 'Black-circle',
   description: 'The black-circle app API description',
