@@ -7,6 +7,7 @@ import { UserRepository } from 'src/modules/repository/services/user.repository'
 import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { FindOptionsWhere, Like } from 'typeorm';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -14,9 +15,10 @@ export class UserService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async getFullInfo(id: string): Promise<UserEntity> {
+  public async getFullInfo(id: string): Promise<UserEntity[]> {
     await this.isUserExist(id);
-    return await this.userRepository.getFullInfo(id);
+    const user = await this.userRepository.getFullInfo(id);
+    return [user];
   }
 
   public async isUserExist(userId: string): Promise<UserEntity> {
@@ -71,11 +73,15 @@ export class UserService {
 
   public async getAllUsers(dto: UsersFilterDto) {
     const { page = 1, limit = 5, order = 'ASC', search = '' } = dto;
+
     const conditions:
       | FindOptionsWhere<UserEntity>
-      | FindOptionsWhere<UserEntity>[] = search
-      ? [{ full_name: Like(`%${search}%`) }, { email: Like(`%${search}%`) }]
-      : {};
+      | FindOptionsWhere<UserEntity[]> = {
+      is_deleted_by_admin: false,
+      ...(search
+        ? { full_name: Like(`%${search}%`), email: Like(`%${search}%`) }
+        : {}),
+    };
 
     const [users, totalCount] = await this.userRepository.findAndCount({
       where: conditions,
@@ -86,14 +92,9 @@ export class UserService {
     return { totalCount, users };
   }
 
-  public async getUser(id: string): Promise<UserEntity> {
-    return await this.isUserExist(id);
-  }
-
   public async softDelete(id: string): Promise<void> {
     const user = await this.isUserExist(id);
     user.is_deleted_by_admin = true;
     await this.userRepository.save(user);
-
   }
 }

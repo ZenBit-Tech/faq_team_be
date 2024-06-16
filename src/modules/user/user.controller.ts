@@ -8,8 +8,8 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
-  Query,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -21,10 +21,11 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
 import { MakeReviewRequestDto } from 'src/modules/user/dto/make-review.request.dto';
 import { RateRequestDto } from 'src/modules/user/dto/rate-request.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
-import { UsersFilterDto } from './dto/filter-users.dto';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';
 import { UserService } from 'src/modules/user/services/user.service';
+
+import { UsersFilterDto } from './dto/filter-users.dto';
 
 @ApiTags('User')
 @Controller(ERouteName.USERS_ROUTE)
@@ -36,7 +37,7 @@ export class UserController {
   ) {}
 
   @Get(ERouteName.GET_USER)
-  async getUser(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity> {
+  async getUser(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity[]> {
     return await this.userService.getFullInfo(id);
   }
 
@@ -60,20 +61,14 @@ export class UserController {
     return await this.userService.getAllUsers(query);
   }
 
-  @Get()
-  @HttpCode(HttpStatus.OK)
-  async getById(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity> {
-    return await this.userService.getUser(id);
-  }
-
-  @Delete()
+  @Delete(ERouteName.DELETE_USER)
   @HttpCode(HttpStatus.OK)
   async deleteBySuperAdmin(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<void> {
     return await this.userService.softDelete(id);
   }
-  
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post(ERouteName.RATE_USER)
