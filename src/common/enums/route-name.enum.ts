@@ -9,6 +9,7 @@ export enum ERouteName {
   GET_REVIEWS = '/user/reviews',
   DELETE_REVIEW = '/user/review/:id',
   USER_UPDATEBYID_ROUTE = 'update/:id',
+  DELETE_USER = 'user-delete/:id',
   GET_USERS_ROUTE = 'get-all',
   SEND_OTP = 'send-otp',
   VERIFY_OTP = 'verify-otp',
