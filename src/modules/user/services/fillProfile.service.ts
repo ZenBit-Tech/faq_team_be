@@ -86,7 +86,10 @@ export class FillProfileService {
     id: string;
     cardDto: PaymentMethod;
   }): Promise<void> {
+    const fillProfileStep = 4;
+
     const stripe = new Stripe(this.configService.get<string>('STRIPE_SECRET'));
+
     const customer = await stripe.customers.create({
       payment_method: cardDto.id,
       email: cardDto.billing_details.email,
@@ -94,6 +97,7 @@ export class FillProfileService {
         default_payment_method: cardDto.id,
       },
     });
+
     const user = await this.userRepository.findOneBy({ id });
 
     if (!user) {
@@ -101,6 +105,10 @@ export class FillProfileService {
         EErrorMessage.USER_NOT_EXIST,
         HttpStatus.BAD_REQUEST,
       );
+    }
+
+    if (user.filled_profile_step < fillProfileStep) {
+      user.filled_profile_step = fillProfileStep;
     }
 
     user.stripe_id = customer.id;
