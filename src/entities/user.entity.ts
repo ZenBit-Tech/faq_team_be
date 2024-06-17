@@ -68,6 +68,12 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'double', nullable: true })
   shoes_size: number;
 
+  @Column()
+  stripe_id: string;
+
+  @Column()
+  payment_method_id: string;
+
   @OneToMany(() => RateEntity, (entity) => entity.rates)
   rates?: RateEntity[];
 

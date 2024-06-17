@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { PaymentMethod } from '@stripe/stripe-js';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
 import { AddressDto } from 'src/modules/user/dto/fillProfileDtos/address.dto';
 import { GeneralInfoDto } from 'src/modules/user/dto/fillProfileDtos/generalInfo.dto';
 import { SizesDto } from 'src/modules/user/dto/fillProfileDtos/sizes.dto';
+import Stripe from 'stripe';
 
 import { RoleDto } from '../dto/fillProfileDtos/role.dto';
 
@@ -77,7 +79,35 @@ export class FillProfileService {
     await this.userRepository.save(user);
   }
 
-  async saveCardInfo(): Promise<void> {}
+  async saveCardInfo({
+    id,
+    cardDto,
+  }: {
+    id: string;
+    cardDto: PaymentMethod;
+  }): Promise<void> {
+    const stripe = new Stripe(this.configService.get<string>('STRIPE_SECRET'));
+    const customer = await stripe.customers.create({
+      payment_method: cardDto.id,
+      email: cardDto.billing_details.email,
+      invoice_settings: {
+        default_payment_method: cardDto.id,
+      },
+    });
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new HttpException(
+        EErrorMessage.USER_NOT_EXIST,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    user.stripe_id = customer.id;
+    user.payment_method_id = cardDto.id;
+
+    await this.userRepository.save(user);
+  }
 
   async saveSizes(sizesDto: SizesDto): Promise<void> {
     const fillProfileStep = 5;

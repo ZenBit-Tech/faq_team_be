@@ -13,6 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { PaymentMethod } from '@stripe/stripe-js';
 import { ERouteName } from 'src/common/enums/route-name.enum';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { UserEntity } from 'src/entities/user.entity';
@@ -112,8 +113,10 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post(ERouteName.SAVE_CARD_INFO)
-  async saveCardInfo(): Promise<void> {
-    return await this.fillProfileService.saveCardInfo();
+  async saveCardInfo(
+    @Body() { id, cardDto }: { id: string; cardDto: PaymentMethod },
+  ): Promise<void> {
+    return await this.fillProfileService.saveCardInfo({ id, cardDto });
   }
 
   @ApiBearerAuth()
