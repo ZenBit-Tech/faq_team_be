@@ -2,11 +2,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
+import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
 import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
-import { FindOptionsWhere, Like } from 'typeorm';
+import { FindOptionsWhere, Like, Not } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -77,6 +78,7 @@ export class UserService {
       | FindOptionsWhere<UserEntity>
       | FindOptionsWhere<UserEntity[]> = {
       is_deleted_by_admin: false,
+      user_role: Not(EUserRole.SUPERADMIN),
       ...(search
         ? { full_name: Like(`%${search}%`), email: Like(`%${search}%`) }
         : {}),

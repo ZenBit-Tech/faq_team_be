@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { EUserStatus } from 'src/common/enums/user-status.enum';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class UserSeederService implements OnModuleInit {
@@ -13,8 +14,10 @@ export class UserSeederService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const isUsersExist = this.userRepository.find();
-    if (isUsersExist) return;
+    const isUsersExist = await this.userRepository.find({
+      where: { user_role: Not(EUserRole.SUPERADMIN) },
+    });
+    if (isUsersExist.length) return;
 
     const users = [
       {
