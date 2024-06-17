@@ -54,6 +54,9 @@ export class UserEntity extends BaseEntity {
   country: string;
 
   @Column({ nullable: true })
+  state: string;
+
+  @Column({ nullable: true })
   city: string;
 
   @Column({ nullable: true })
@@ -62,7 +65,7 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   jeans_size: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'double', nullable: true })
   shoes_size: number;
 
   @OneToMany(() => RateEntity, (entity) => entity.rates)
