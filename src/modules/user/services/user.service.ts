@@ -15,10 +15,9 @@ export class UserService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async getFullInfo(id: string): Promise<UserEntity[]> {
+  public async getFullInfo(id: string): Promise<UserEntity> {
     await this.isUserExist(id);
-    const user = await this.userRepository.getFullInfo(id);
-    return [user];
+    return await this.userRepository.getFullInfo(id);
   }
 
   public async isUserExist(userId: string): Promise<UserEntity> {
