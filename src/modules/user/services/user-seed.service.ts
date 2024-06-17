@@ -13,6 +13,9 @@ export class UserSeederService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
+    const isUsersExist = this.userRepository.find();
+    if (isUsersExist) return;
+
     const users = [
       {
         full_name: 'John Doe',
