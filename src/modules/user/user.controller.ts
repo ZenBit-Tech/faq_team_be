@@ -21,15 +21,11 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
 import { MakeReviewRequestDto } from 'src/modules/user/dto/make-review.request.dto';
 import { RateRequestDto } from 'src/modules/user/dto/rate-request.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
-import { FillProfileService } from 'src/modules/user/services/fillProfile.service';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';
 import { UserService } from 'src/modules/user/services/user.service';
 
-import { AddressDto } from './dto/fillProfileDtos/address.dto';
-import { GeneralInfoDto } from './dto/fillProfileDtos/generalInfo.dto';
-import { RoleDto } from './dto/fillProfileDtos/role.dto';
-import { SizesDto } from './dto/fillProfileDtos/sizes.dto';
+import { GeneralInfoDto } from './dto/general-info.dto';
 
 @ApiTags('User')
 @Controller(ERouteName.USERS_ROUTE)
@@ -38,7 +34,6 @@ export class UserController {
     private readonly userService: UserService,
     private readonly rateService: RateService,
     private readonly reviewService: ReviewService,
-    private readonly fillProfileService: FillProfileService,
   ) {}
 
   @Get(ERouteName.GET_USER)
@@ -91,38 +86,23 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post(ERouteName.SAVE_ROLE)
-  async saveRole(@Body() roleDto: RoleDto): Promise<void> {
-    return await this.fillProfileService.saveRole(roleDto);
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post(ERouteName.SAVE_GENERAL_INFO)
-  async saveGeneralInfo(@Body() generalInfoDto: GeneralInfoDto): Promise<void> {
-    return await this.fillProfileService.saveGeneralInfo(generalInfoDto);
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Post(ERouteName.SAVE_ADDRESS)
-  async saveAddress(@Body() addressDto: AddressDto): Promise<void> {
-    return await this.fillProfileService.saveAddress(addressDto);
+  async saveGeneralInfo(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() generalInfoDto: GeneralInfoDto,
+  ): Promise<void> {
+    return await this.userService.saveGeneralInfo({ id, generalInfoDto });
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post(ERouteName.SAVE_CARD_INFO)
   async saveCardInfo(
-    @Body() { id, cardDto }: { id: string; cardDto: PaymentMethod },
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('step') step: number,
+    @Body()
+    { cardDto }: { cardDto: PaymentMethod },
   ): Promise<void> {
-    return await this.fillProfileService.saveCardInfo({ id, cardDto });
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Post(ERouteName.SAVE_SIZES)
-  async saveSizes(@Body() sizesDto: SizesDto): Promise<void> {
-    return await this.fillProfileService.saveSizes(sizesDto);
+    return await this.userService.saveCardInfo({ id, step, cardDto });
   }
 }

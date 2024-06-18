@@ -8,6 +8,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+import { EUserRole } from 'src/common/enums/user-role.enum';
 import { EUserStatus } from 'src/common/enums/user-status.enum';
 
 export class UpdateUserDto {
@@ -38,6 +39,11 @@ export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
+  role: EUserRole;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   avatar: string;
 
   @ApiProperty()
@@ -63,6 +69,11 @@ export class UpdateUserDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
+  state: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
   city: string;
 
   @ApiProperty()
@@ -77,7 +88,7 @@ export class UpdateUserDto {
 
   @ApiProperty()
   @IsOptional()
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ value }) => parseFloat(value))
   @IsNumber()
   shoes_size: number;
 }

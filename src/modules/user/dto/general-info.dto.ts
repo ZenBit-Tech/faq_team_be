@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class GeneralInfoDto {
-  @IsString()
+  @IsNumber()
   @ApiProperty()
-  id: string;
+  step: number;
 
   @IsString()
   @ApiProperty()
-  image: string;
+  image: Express.Multer.File;
 
   @IsString()
   @ApiProperty()
