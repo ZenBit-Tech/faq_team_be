@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
+import { ESort } from 'src/common/enums/sort.enum';
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
@@ -71,8 +72,10 @@ export class UserService {
     });
   }
 
-  public async getAllUsers(dto: UsersFilterDto) {
-    const { page = 1, limit = 5, order = 'ASC', search = '' } = dto;
+  public async getAllUsers(
+    dto: UsersFilterDto,
+  ): Promise<{ totalCount: number; users: UserEntity[] }> {
+    const { page = 1, limit, order = ESort.ASC, search = '' } = dto;
 
     const conditions:
       | FindOptionsWhere<UserEntity>
@@ -87,7 +90,7 @@ export class UserService {
     const [users, totalCount] = await this.userRepository.findAndCount({
       where: conditions,
       order: { full_name: order },
-      skip: (page - 1) * limit,
+      skip: limit ? (page - 1) * limit : 0,
       take: limit,
     });
     return { totalCount, users };
