@@ -2,8 +2,8 @@ version: '3'
 
 services:
   db:
-    image: mysql:latest
-    command: ["mysqld", "--mysql-native-password=ON"]
+    image: mysql:5.6
+    # command: ["mysqld", "--mysql-native-password=ON"]
     restart: always
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: yes

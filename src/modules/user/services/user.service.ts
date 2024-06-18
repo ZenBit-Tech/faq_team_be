@@ -3,13 +3,17 @@ import { ConfigService } from '@nestjs/config';
 import { PaymentMethod } from '@stripe/stripe-js';
 import * as bcrypt from 'bcrypt';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
+import { ESort } from 'src/common/enums/sort.enum';
+import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
 import { GeneralInfoDto } from 'src/modules/user/dto/general-info.dto';
-import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import Stripe from 'stripe';
 
 import { S3Service } from './aws.service';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
+import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { FindOptionsWhere, Like, Not } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -142,6 +146,37 @@ export class UserService {
 
     user.avatar = imageUrl;
     user.phone = generalInfoDto.phone;
+
+    await this.userRepository.save(user);
+  }
+
+  public async getAllUsers(
+    dto: UsersFilterDto,
+  ): Promise<{ totalCount: number; users: UserEntity[] }> {
+    const { page = 1, limit, order = ESort.ASC, search = '' } = dto;
+
+    const conditions:
+      | FindOptionsWhere<UserEntity>
+      | FindOptionsWhere<UserEntity[]> = {
+      is_deleted_by_admin: false,
+      user_role: Not(EUserRole.SUPERADMIN),
+      ...(search
+        ? { full_name: Like(`%${search}%`), email: Like(`%${search}%`) }
+        : {}),
+    };
+
+    const [users, totalCount] = await this.userRepository.findAndCount({
+      where: conditions,
+      order: { full_name: order },
+      skip: limit ? (page - 1) * limit : 0,
+      take: limit,
+    });
+    return { totalCount, users };
+  }
+
+  public async softDelete(id: string): Promise<void> {
+    const user = await this.isUserExist(id);
+    user.is_deleted_by_admin = true;
     await this.userRepository.save(user);
   }
 }
