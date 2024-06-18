@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -23,6 +24,8 @@ import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';
 import { UserService } from 'src/modules/user/services/user.service';
+
+import { UsersFilterDto } from './dto/filter-users.dto';
 
 @ApiTags('User')
 @Controller(ERouteName.USERS_ROUTE)
@@ -48,6 +51,22 @@ export class UserController {
   ): Promise<{ message: string }> {
     await this.userService.updateUser(updateUserDto, id);
     return { message: 'user updated successfully' };
+  }
+
+  @Get(ERouteName.GET_USERS_ROUTE)
+  @HttpCode(HttpStatus.OK)
+  async getAll(
+    @Query() query: UsersFilterDto,
+  ): Promise<{ users: UserEntity[]; totalCount: number }> {
+    return await this.userService.getAllUsers(query);
+  }
+
+  @Delete(ERouteName.DELETE_USER)
+  @HttpCode(HttpStatus.OK)
+  async deleteBySuperAdmin(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<void> {
+    return await this.userService.softDelete(id);
   }
 
   @ApiBearerAuth()
