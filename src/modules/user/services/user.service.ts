@@ -2,18 +2,18 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PaymentMethod } from '@stripe/stripe-js';
 import * as bcrypt from 'bcrypt';
+import { EAwsBucketPath } from 'src/common/enums/aws-bucket-path.enum';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { ESort } from 'src/common/enums/sort.enum';
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
-import { GeneralInfoDto } from 'src/modules/user/dto/general-info.dto';
-import Stripe from 'stripe';
-
-import { S3Service } from './aws.service';
 import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import Stripe from 'stripe';
 import { FindOptionsWhere, Like, Not } from 'typeorm';
+
+import { S3Service } from './aws.service';
 
 @Injectable()
 export class UserService {
@@ -80,20 +80,19 @@ export class UserService {
 
   public async saveCardInfo({
     id,
-    step,
-    cardDto,
+    paymentMethod,
   }: {
     id: string;
-    step: number;
-    cardDto: PaymentMethod;
+    paymentMethod: PaymentMethod;
   }): Promise<void> {
+    const step = 4;
     const stripe = new Stripe(this.configService.get<string>('STRIPE_SECRET'));
 
     const customer = await stripe.customers.create({
-      payment_method: cardDto.id,
-      email: cardDto.billing_details.email,
+      payment_method: paymentMethod.id,
+      email: paymentMethod.billing_details.email,
       invoice_settings: {
-        default_payment_method: cardDto.id,
+        default_payment_method: paymentMethod.id,
       },
     });
 
@@ -111,20 +110,24 @@ export class UserService {
     }
 
     user.stripe_id = customer.id;
-    user.payment_method_id = cardDto.id;
+    user.payment_method_id = paymentMethod.id;
 
     await this.userRepository.save(user);
   }
 
   public async saveGeneralInfo({
-    generalInfoDto,
     id,
+    file,
+    phone,
   }: {
     id: string;
-    generalInfoDto: GeneralInfoDto;
+    file: Express.Multer.File;
+    phone: string;
   }): Promise<void> {
-    const itemType = 'avatar';
-    const name = 'user';
+    const itemType = EAwsBucketPath.ITEM_TYPE_AVATAR;
+    const name = EAwsBucketPath.NAME_USER;
+    const step = 2;
+
     const user = await this.userRepository.findOneBy({ id });
 
     if (!user) {
@@ -134,18 +137,14 @@ export class UserService {
       );
     }
 
-    if (user.filled_profile_step < generalInfoDto.step) {
-      user.filled_profile_step = generalInfoDto.step;
+    if (user.filled_profile_step < step) {
+      user.filled_profile_step = step;
     }
 
-    const imageUrl = await this.s3Service.uploadFile(
-      generalInfoDto.image,
-      itemType,
-      name,
-    );
+    const imageUrl = await this.s3Service.uploadFile(file, itemType, name);
 
     user.avatar = imageUrl;
-    user.phone = generalInfoDto.phone;
+    user.phone = phone;
 
     await this.userRepository.save(user);
   }

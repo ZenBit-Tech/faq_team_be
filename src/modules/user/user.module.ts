@@ -9,7 +9,13 @@ import { S3Service } from './services/aws.service';
 
 @Module({
   imports: [],
-  providers: [UserService, RateService, ReviewService, S3Service, UserSeederService],
+  providers: [
+    UserService,
+    RateService,
+    ReviewService,
+    S3Service,
+    UserSeederService,
+  ],
   controllers: [UserController],
   exports: [UserService],
 })

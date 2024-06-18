@@ -1,10 +1,17 @@
 import { PutObjectCommand, S3Client, S3ClientConfig } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { EAwsBucketPath } from 'src/common/enums/aws-bucket-path.enum';
 
 @Injectable()
 export class S3Service {
   private client: S3Client;
+  private awsConfig: {
+    accessKey: string;
+    secretKey: string;
+    bucket: string;
+    region: string;
+  };
   constructor(private readonly configService: ConfigService) {
     const awsConfig = {
       accessKey: this.configService.get<string>('AWS_ACCESS_KEY'),
@@ -24,20 +31,21 @@ export class S3Service {
 
   public async uploadFile(
     file: Express.Multer.File,
-    itemType: 'avatar',
+    itemType: EAwsBucketPath,
     name: string,
   ): Promise<string> {
-    const config = this.configService.get('aws');
     const filePath = this.buildPath(itemType, name, file.originalname);
+
     await this.client.send(
       new PutObjectCommand({
         Key: filePath,
         ACL: 'public-read',
-        Bucket: config.bucket,
+        Bucket: this.awsConfig.bucket,
         Body: file.buffer,
       }),
     );
-    return `https://black-circle-faq-team.s3.us-east-2.amazonaws.com/${filePath}`;
+
+    return `https://${this.awsConfig.bucket}.s3.${this.awsConfig.region}.amazonaws.com/${filePath}`;
   }
 
   private buildPath(itemType: string, name: string, fileName: string): string {

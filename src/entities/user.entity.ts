@@ -68,10 +68,10 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'double', nullable: true })
   shoes_size: number;
 
-  @Column()
+  @Column({ nullable: true })
   stripe_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   payment_method_id: string;
 
   @OneToMany(() => RateEntity, (entity) => entity.rates)
