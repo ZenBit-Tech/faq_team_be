@@ -8,6 +8,7 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
+
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { EUserStatus } from 'src/common/enums/user-status.enum';
 
