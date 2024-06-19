@@ -91,7 +91,7 @@ export class UserController {
     @Req() { user },
     @Param('id', ParseUUIDPipe) follow_target_id: string,
   ): Promise<void> {
-    await this.followService.follow(user.id, follow_target_id);
+    await this.followService.follow(user.userId, follow_target_id);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -102,6 +102,6 @@ export class UserController {
     @Req() { user },
     @Param('id', ParseUUIDPipe) unfollow_target_id: string,
   ): Promise<void> {
-    await this.followService.unfollow(user.id, unfollow_target_id);
+    await this.followService.unfollow(user.userId, unfollow_target_id);
   }
 }
