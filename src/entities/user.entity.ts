@@ -66,6 +66,9 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   shoes_size: number;
 
+  @Column({ nullable: true })
+  avgRate: number;
+
   @OneToMany(() => RateEntity, (entity) => entity.rates)
   rates?: RateEntity[];
 

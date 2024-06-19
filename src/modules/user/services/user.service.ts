@@ -14,8 +14,16 @@ export class UserService {
   ) {}
 
   public async getFullInfo(id: string): Promise<UserEntity> {
+    let sumRate = 0;
+
     await this.isUserExist(id);
-    return await this.userRepository.getFullInfo(id);
+
+    const user = await this.userRepository.getFullInfo(id);
+    user.rate_targets.map((entity) => (sumRate = sumRate + entity.rate));
+
+    const avgRate = sumRate / user.rate_targets.length;
+
+    return { ...user, avgRate: avgRate };
   }
 
   public async isUserExist(userId: string): Promise<UserEntity> {
