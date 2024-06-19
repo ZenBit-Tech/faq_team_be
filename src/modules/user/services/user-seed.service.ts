@@ -1,10 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { Not } from 'typeorm';
+
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
 import { users } from 'src/utils/constants/fakeUsers';
-import { Not } from 'typeorm';
 
 @Injectable()
 export class UserSeederService implements OnModuleInit {

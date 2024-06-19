@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { RateRepository } from 'src/modules/repository/services/rate.repository';
 import { UserRepository } from 'src/modules/repository/services/user.repository';

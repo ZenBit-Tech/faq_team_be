@@ -1,6 +1,7 @@
 import { PutObjectCommand, S3Client, S3ClientConfig } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { EAwsBucketPath } from 'src/common/enums/aws-bucket-path.enum';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class S3Service {
     bucket: string;
     region: string;
   };
+
   constructor(private readonly configService: ConfigService) {
     const awsConfig = {
       accessKey: this.configService.get<string>('AWS_ACCESS_KEY'),
@@ -19,6 +21,7 @@ export class S3Service {
       bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
       region: this.configService.get<string>('AWS_S3_REGION'),
     };
+
     const params: S3ClientConfig = {
       region: awsConfig.region,
       credentials: {
@@ -26,6 +29,7 @@ export class S3Service {
         secretAccessKey: awsConfig.secretKey,
       },
     };
+
     this.client = new S3Client(params);
   }
 

@@ -4,6 +4,8 @@ import { ETableName } from '../common/enums/table-name.enum';
 import { EUserRole } from '../common/enums/user-role.enum';
 import { EUserStatus } from '../common/enums/user-status.enum';
 import { BaseEntity } from './models/base.entity';
+import { OrderEntity } from './order.entity';
+import { ProductEntity } from './product.entity';
 import { RateEntity } from './rate.entity';
 import { ReviewEntity } from './review.entity';
 
@@ -85,4 +87,10 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => ReviewEntity, (entity) => entity.author)
   user_reviews?: ReviewEntity[];
+
+  @OneToMany(() => OrderEntity, (entity) => entity.buyer_id)
+  orders?: OrderEntity[];
+
+  @OneToMany(() => ProductEntity, (entity) => entity.vendor_id)
+  products?: ProductEntity[];
 }
