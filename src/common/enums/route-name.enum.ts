@@ -14,6 +14,12 @@ export enum ERouteName {
   SEND_OTP = 'send-otp',
   VERIFY_OTP = 'verify-otp',
 
+  SAVE_ROLE = 'save-role',
+  SAVE_GENERAL_INFO = 'save-general-info',
+  SAVE_ADDRESS = 'save-address',
+  SAVE_CARD_INFO = 'save-card-info',
+  SAVE_SIZES = 'save-sizes',
+
   GOOGLE_ROUTE = 'google',
   GOOGLE_REDIRECT = 'redirect',
 

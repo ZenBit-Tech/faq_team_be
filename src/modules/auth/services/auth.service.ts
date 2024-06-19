@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as randomize from 'randomatic';
+
 import { AccesResponseDto } from 'src/modules/auth/dto/sign-in.response.dto';
 import { SignUpRequestDto } from 'src/modules/auth/dto/sign-up.request.dto';
 import { UserDto } from 'src/modules/auth/dto/user.response.dto';

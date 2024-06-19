@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+
 import { AuthController } from 'src/modules/auth/auth.controller';
 import { AuthService } from 'src/modules/auth/services/auth.service';
 import { OtpService } from 'src/modules/auth/services/otp.service';

@@ -11,9 +11,14 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { PaymentMethod } from '@stripe/stripe-js';
+
 import { ERouteName } from 'src/common/enums/route-name.enum';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { UserEntity } from 'src/entities/user.entity';
@@ -98,5 +103,28 @@ export class UserController {
   @Delete(ERouteName.DELETE_REVIEW)
   async deleteReview(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return await this.reviewService.deleteReview(id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(ERouteName.SAVE_GENERAL_INFO)
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  async saveGeneralInfo(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('phone') phone: string,
+    @Body('id') id: string,
+  ) {
+    return await this.userService.saveGeneralInfo({ file, phone, id });
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(ERouteName.SAVE_CARD_INFO)
+  async saveCardInfo(
+    @Body()
+    { paymentMethod, id }: { paymentMethod: PaymentMethod; id: string },
+  ): Promise<void> {
+    return await this.userService.saveCardInfo({ id, paymentMethod });
   }
 }

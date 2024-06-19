@@ -11,12 +11,14 @@ export class ReviewEntity extends BaseEntity {
 
   @Column()
   reviewer_id: string;
+
   @ManyToOne(() => UserEntity, (entity) => entity.user_reviews)
   @JoinColumn({ name: 'reviewer_id' })
   author?: UserEntity;
 
   @Column()
   review_target_id: string;
+
   @ManyToOne(() => UserEntity, (entity) => entity.review_targets)
   @JoinColumn({ name: 'review_target_id' })
   review_target?: UserEntity;
