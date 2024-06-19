@@ -1,8 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import { EErrorMessage } from 'src/common/enums/error-message.enum';
+import { FollowRepository } from 'src/modules/repository/services/followe.repository';
 import { UserService } from 'src/modules/user/services/user.service';
-
-import { EErrorMessage } from '../../../common/enums/error-message.enum';
-import { FollowRepository } from '../../repository/services/followe.repository';
 
 @Injectable()
 export class FollowService {
@@ -20,10 +19,7 @@ export class FollowService {
     }
 
     const entity = await this.userService.isUserExist(follow_target_id);
-    const isFollow = await this.followRepository.findOneBy({
-      follower_id,
-      following_id: entity.id,
-    });
+    const isFollow = await this.isFollowing(follower_id, entity.id);
 
     if (isFollow) {
       throw new ConflictException(EErrorMessage.ALREADY_FOLLOW);
@@ -42,10 +38,8 @@ export class FollowService {
     unfollow_target_id: string,
   ): Promise<void> {
     const entity = await this.userService.isUserExist(unfollow_target_id);
-    const isFollow = await this.followRepository.findOneBy({
-      follower_id,
-      following_id: entity.id,
-    });
+
+    const isFollow = await this.isFollowing(follower_id, entity.id);
 
     if (!isFollow) {
       throw new ConflictException(EErrorMessage.CANT_UNFOLLOW);
@@ -55,5 +49,15 @@ export class FollowService {
       follower_id,
       following_id: entity.id,
     });
+  }
+
+  public async isFollowing(
+    follower_id: string,
+    follow_target_id: string,
+  ): Promise<boolean> {
+    return !!(await this.followRepository.findOneBy({
+      follower_id,
+      following_id: follow_target_id,
+    }));
   }
 }

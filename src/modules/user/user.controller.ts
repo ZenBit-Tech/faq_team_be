@@ -104,4 +104,18 @@ export class UserController {
   ): Promise<void> {
     await this.followService.unfollow(user.userId, unfollow_target_id);
   }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/is-following')
+  public async isFollowing(
+    @Req() { user },
+    @Param('id', ParseUUIDPipe) unfollow_target_id: string,
+  ): Promise<boolean> {
+    return await this.followService.isFollowing(
+      user.userId,
+      unfollow_target_id,
+    );
+  }
 }
