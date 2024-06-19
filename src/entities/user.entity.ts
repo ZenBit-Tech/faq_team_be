@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { ETableName } from '../common/enums/table-name.enum';
 import { EUserRole } from '../common/enums/user-role.enum';
 import { EUserStatus } from '../common/enums/user-status.enum';
+import { FollowEntity } from './follow.entity';
 import { BaseEntity } from './models/base.entity';
 import { RateEntity } from './rate.entity';
 import { ReviewEntity } from './review.entity';
@@ -68,7 +69,7 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => RateEntity, (entity) => entity.rates)
   rates?: RateEntity[];
 
-  @OneToMany(() => RateEntity, (entity) => entity.user_target_id)
+  @OneToMany(() => RateEntity, (entity) => entity.user_target)
   rate_targets?: RateEntity[];
 
   @OneToMany(() => ReviewEntity, (entity) => entity.review_target)
@@ -76,4 +77,10 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => ReviewEntity, (entity) => entity.author)
   user_reviews?: ReviewEntity[];
+
+  @OneToMany(() => FollowEntity, (entity) => entity.follower)
+  followers?: FollowEntity[];
+
+  @OneToMany(() => FollowEntity, (entity) => entity.following)
+  followings?: FollowEntity[];
 }

@@ -22,6 +22,24 @@ export class UserRepository extends Repository<UserEntity> {
       'user_reviews.review_target_id = review_target.id',
     ).addSelect(['review_target.id', 'review_target.full_name']);
 
+    qb.leftJoinAndSelect(
+      'user.review_targets',
+      'review_targets',
+      'user.id = review_targets.review_target',
+    );
+
+    qb.leftJoin(
+      'review_targets.author',
+      'author',
+      'review_targets.reviewer_id = review_target.id',
+    );
+
+    qb.leftJoin(
+      'user.rate_targets',
+      'rate_targets',
+      'user.id = rate_targets.user_target',
+    ).addSelect(['rate_targets.rate']);
+
     qb.where('user.id = :id', { id });
 
     return await qb.getOne();

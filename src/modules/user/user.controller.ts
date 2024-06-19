@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
 import { MakeReviewRequestDto } from 'src/modules/user/dto/make-review.request.dto';
 import { RateRequestDto } from 'src/modules/user/dto/rate-request.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { FollowService } from 'src/modules/user/services/follow.service';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';
 import { UserService } from 'src/modules/user/services/user.service';
@@ -31,6 +32,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly rateService: RateService,
     private readonly reviewService: ReviewService,
+    private readonly followService: FollowService,
   ) {}
 
   @Get(ERouteName.GET_USER)
@@ -79,5 +81,27 @@ export class UserController {
   @Delete(ERouteName.DELETE_REVIEW)
   async deleteReview(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return await this.reviewService.deleteReview(id);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/follow')
+  public async follow(
+    @Req() { user },
+    @Param('id', ParseUUIDPipe) follow_target_id: string,
+  ): Promise<void> {
+    await this.followService.follow(user.id, follow_target_id);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/follow')
+  public async unfollow(
+    @Req() { user },
+    @Param('id', ParseUUIDPipe) unfollow_target_id: string,
+  ): Promise<void> {
+    await this.followService.unfollow(user.id, unfollow_target_id);
   }
 }
