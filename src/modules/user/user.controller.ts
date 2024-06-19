@@ -86,7 +86,7 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post(':id/follow')
+  @Post(ERouteName.FOLLOW)
   public async follow(
     @Req() { user },
     @Param('id', ParseUUIDPipe) follow_target_id: string,
@@ -97,7 +97,7 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete(':id/follow')
+  @Delete(ERouteName.UNFOLLOW)
   public async unfollow(
     @Req() { user },
     @Param('id', ParseUUIDPipe) unfollow_target_id: string,
@@ -107,7 +107,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('/:id/is-following')
+  @Get(ERouteName.ISFOLLOWING)
   public async isFollowing(
     @Req() { user },
     @Param('id', ParseUUIDPipe) unfollow_target_id: string,

@@ -12,6 +12,10 @@ export enum ERouteName {
   SEND_OTP = 'send-otp',
   VERIFY_OTP = 'verify-otp',
 
+  FOLLOW = ':id/follow',
+  UNFOLLOW = ':id/unfollow',
+  ISFOLLOWING = '/:id/is-following',
+
   GOOGLE_ROUTE = 'google',
   GOOGLE_REDIRECT = 'redirect',
 
