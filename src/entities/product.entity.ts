@@ -7,9 +7,6 @@ import { OrderEntity } from './order.entity';
 @Entity(ETableName.PRODUCTS)
 export class ProductEntity extends BaseEntity {
   @Column()
-  cart_id: string;
-
-  @Column()
   vendor_id: string;
 
   @Column()
@@ -27,7 +24,7 @@ export class ProductEntity extends BaseEntity {
   @Column()
   category: string;
 
-  @Column()
+  @Column({ nullable: true })
   image: string;
 
   @OneToMany(() => OrderEntity, (entity) => entity.product_id)

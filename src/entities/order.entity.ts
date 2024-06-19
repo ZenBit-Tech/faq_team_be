@@ -10,4 +10,7 @@ export class OrderEntity extends BaseEntity {
 
   @Column()
   buyer_id: number;
+
+  @Column({ type: 'double' })
+  price: number;
 }
