@@ -6,10 +6,10 @@ import { BaseEntity } from '../entities/models/base.entity';
 @Entity(ETableName.ORDERS)
 export class OrderEntity extends BaseEntity {
   @Column()
-  product_id: number;
+  product_id: string;
 
   @Column()
-  buyer_id: number;
+  buyer_id: string;
 
   @Column({ type: 'double' })
   price: number;

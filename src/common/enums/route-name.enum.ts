@@ -20,6 +20,10 @@ export enum ERouteName {
   SAVE_CARD_INFO = 'save-card-info',
   SAVE_SIZES = 'save-sizes',
 
+  PRODUCTS_ROUTE = 'products',
+  GET_PRODUCTS_ROUTE = 'get-products',
+  GET_ORDERS_ROUTE = 'get-orders',
+
   GOOGLE_ROUTE = 'google',
   GOOGLE_REDIRECT = 'redirect',
 

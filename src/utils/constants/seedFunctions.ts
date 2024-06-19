@@ -1,5 +1,5 @@
 import { format, subYears } from 'date-fns';
-import seedrandom from 'seedrandom';
+import * as seedrandom from 'seedrandom';
 import { v4 as uuidv4 } from 'uuid';
 
 export const generateSeededUUIDs = (seed: string, count: number): string[] => {
