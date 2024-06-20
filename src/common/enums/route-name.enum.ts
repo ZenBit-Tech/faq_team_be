@@ -14,6 +14,10 @@ export enum ERouteName {
   SEND_OTP = 'send-otp',
   VERIFY_OTP = 'verify-otp',
 
+  FOLLOW = ':id/follow',
+  UNFOLLOW = ':id/unfollow',
+  ISFOLLOWING = '/:id/is-following',
+
   SAVE_ROLE = 'save-role',
   SAVE_GENERAL_INFO = 'save-general-info',
   SAVE_ADDRESS = 'save-address',
