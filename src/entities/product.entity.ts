@@ -1,8 +1,9 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { ETableName } from '../common/enums/table-name.enum';
 import { BaseEntity } from '../entities/models/base.entity';
 import { OrderEntity } from './order.entity';
+import { UserEntity } from './user.entity';
 
 @Entity(ETableName.PRODUCTS)
 export class ProductEntity extends BaseEntity {
@@ -27,6 +28,10 @@ export class ProductEntity extends BaseEntity {
   @Column({ nullable: true })
   image: string;
 
-  @OneToMany(() => OrderEntity, (entity) => entity.product_id)
-  orders?: OrderEntity[];
+  @OneToMany(() => OrderEntity, (order) => order.product)
+  orders: OrderEntity[];
+
+  @ManyToOne(() => UserEntity, (user) => user.products)
+  @JoinColumn({ name: 'vendor_id' })
+  owner: UserEntity;
 }

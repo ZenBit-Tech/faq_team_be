@@ -38,7 +38,7 @@ export const fake_product_creation_date = '2022-01-01';
 export const products_quantity = 1000;
 export const orders_quantity = 1000;
 export const max_price = 1000;
-export const min_price = 1000;
+export const min_price = 0;
 
 export const product_names = [
   'Classic Cotton Tee',
