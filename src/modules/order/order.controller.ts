@@ -6,7 +6,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { ERouteName } from 'src/common/enums/route-name.enum';
 import { OrderEntity } from 'src/entities/order.entity';
@@ -20,6 +20,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   //TODO: move this route to product modules when it is created (it is here for testing)
+  @ApiBearerAuth()
   @Get(ERouteName.GET_PRODUCTS_ROUTE)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -27,6 +28,7 @@ export class OrderController {
     return await this.orderService.getAllProducts();
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_ORDERS_ROUTE)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -34,6 +36,7 @@ export class OrderController {
     return await this.orderService.getAllOrders();
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_TOTAL_SALES_ROUTE)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -43,6 +46,7 @@ export class OrderController {
     return await this.orderService.getTotalSales(userId);
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_AVERAGE_SALES_ROUTE)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -52,6 +56,7 @@ export class OrderController {
     return await this.orderService.getAverageSales(userId);
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_NUMBER_OF_ORDERS_ROUTE)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -61,6 +66,7 @@ export class OrderController {
     return await this.orderService.getNumberOfOrders(userId);
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_TOTAL_SALES_PER_MONTH)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -70,6 +76,7 @@ export class OrderController {
     return await this.orderService.getTotalSalesPerMonth(userId);
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_TOTAL_SALES_FOR_CATEGORIES)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
@@ -79,6 +86,7 @@ export class OrderController {
     return await this.orderService.getTotalSalesForCategories(userId);
   }
 
+  @ApiBearerAuth()
   @Get(ERouteName.GET_LAST_ORDERS)
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
