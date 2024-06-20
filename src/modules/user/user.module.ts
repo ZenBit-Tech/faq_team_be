@@ -11,12 +11,11 @@ import { UserController } from 'src/modules/user/user.controller';
 @Module({
   imports: [],
 
-  providers: [UserService, RateService, ReviewService, FollowService],
-
   providers: [
     UserService,
     RateService,
     ReviewService,
+    FollowService,
     S3Service,
     UserSeederService,
   ],

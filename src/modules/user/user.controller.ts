@@ -107,7 +107,6 @@ export class UserController {
     return await this.reviewService.deleteReview(id);
   }
 
-
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -141,6 +140,7 @@ export class UserController {
       user.userId,
       unfollow_target_id,
     );
+  }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -163,6 +163,5 @@ export class UserController {
     { paymentMethod, id }: { paymentMethod: PaymentMethod; id: string },
   ): Promise<void> {
     return await this.userService.saveCardInfo({ id, paymentMethod });
-
   }
 }
