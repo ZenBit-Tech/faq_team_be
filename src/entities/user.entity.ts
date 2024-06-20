@@ -98,9 +98,9 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => FollowEntity, (entity) => entity.following)
   followings?: FollowEntity[];
 
-  @OneToMany(() => OrderEntity, (entity) => entity.buyer_id)
+  @OneToMany(() => OrderEntity, (entity) => entity.buyer)
   orders?: OrderEntity[];
 
-  @OneToMany(() => ProductEntity, (entity) => entity.vendor_id)
+  @OneToMany(() => ProductEntity, (entity) => entity.owner)
   products?: ProductEntity[];
 }

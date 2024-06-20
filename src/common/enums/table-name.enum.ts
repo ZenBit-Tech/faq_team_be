@@ -7,5 +7,4 @@ export enum ETableName {
 
   PRODUCTS = 'products',
   ORDERS = 'orders',
-
 }

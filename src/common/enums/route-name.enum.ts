@@ -14,7 +14,6 @@ export enum ERouteName {
   SEND_OTP = 'send-otp',
   VERIFY_OTP = 'verify-otp',
 
-
   FOLLOW = ':id/follow',
   UNFOLLOW = ':id/unfollow',
   ISFOLLOWING = '/:id/is-following',
@@ -25,6 +24,15 @@ export enum ERouteName {
   SAVE_CARD_INFO = 'save-card-info',
   SAVE_SIZES = 'save-sizes',
 
+  ORDERS_ROUTE = 'orders',
+  GET_PRODUCTS_ROUTE = 'get-products',
+  GET_ORDERS_ROUTE = 'get-orders',
+  GET_TOTAL_SALES_ROUTE = 'get-total-sales',
+  GET_AVERAGE_SALES_ROUTE = 'get-average-sales',
+  GET_NUMBER_OF_ORDERS_ROUTE = 'get-number-of-orders',
+  GET_TOTAL_SALES_PER_MONTH = 'get-total-sales-per-month',
+  GET_TOTAL_SALES_FOR_CATEGORIES = 'get-total-sales-for-categories',
+  GET_LAST_ORDERS = 'get-last-orders',
 
   GOOGLE_ROUTE = 'google',
   GOOGLE_REDIRECT = 'redirect',
