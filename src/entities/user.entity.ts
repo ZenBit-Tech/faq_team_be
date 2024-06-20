@@ -73,13 +73,12 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: true })
   avgRate: number;
-  
+
   @Column({ nullable: true })
   stripe_id: string;
 
   @Column({ nullable: true })
   payment_method_id: string;
-
 
   @OneToMany(() => RateEntity, (entity) => entity.rates)
   rates?: RateEntity[];
@@ -93,7 +92,6 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => ReviewEntity, (entity) => entity.author)
   user_reviews?: ReviewEntity[];
 
-
   @OneToMany(() => FollowEntity, (entity) => entity.follower)
   followers?: FollowEntity[];
 
@@ -105,5 +103,4 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => ProductEntity, (entity) => entity.vendor_id)
   products?: ProductEntity[];
-
 }

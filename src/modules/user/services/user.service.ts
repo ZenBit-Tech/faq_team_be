@@ -31,9 +31,9 @@ export class UserService {
     const user = await this.userRepository.getFullInfo(id);
     user.rate_targets.map((entity) => (sumRate = sumRate + entity.rate));
 
-    const avgRate = sumRate / user.rate_targets.length;
+    user.avgRate = sumRate / user.rate_targets.length;
 
-    return { ...user, avgRate: avgRate };
+    return user;
   }
 
   public async isUserExist(userId: string): Promise<UserEntity> {
