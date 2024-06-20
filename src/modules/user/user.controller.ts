@@ -9,10 +9,16 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { PaymentMethod } from '@stripe/stripe-js';
+
 import { ERouteName } from 'src/common/enums/route-name.enum';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { UserEntity } from 'src/entities/user.entity';
@@ -24,6 +30,8 @@ import { FollowService } from 'src/modules/user/services/follow.service';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';
 import { UserService } from 'src/modules/user/services/user.service';
+
+import { UsersFilterDto } from './dto/filter-users.dto';
 
 @ApiTags('User')
 @Controller(ERouteName.USERS_ROUTE)
@@ -50,6 +58,22 @@ export class UserController {
   ): Promise<{ message: string }> {
     await this.userService.updateUser(updateUserDto, id);
     return { message: 'user updated successfully' };
+  }
+
+  @Get(ERouteName.GET_USERS_ROUTE)
+  @HttpCode(HttpStatus.OK)
+  async getAll(
+    @Query() query: UsersFilterDto,
+  ): Promise<{ users: UserEntity[]; totalCount: number }> {
+    return await this.userService.getAllUsers(query);
+  }
+
+  @Delete(ERouteName.DELETE_USER)
+  @HttpCode(HttpStatus.OK)
+  async deleteBySuperAdmin(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<void> {
+    return await this.userService.softDelete(id);
   }
 
   @ApiBearerAuth()
@@ -82,6 +106,7 @@ export class UserController {
   async deleteReview(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return await this.reviewService.deleteReview(id);
   }
+
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
@@ -116,5 +141,28 @@ export class UserController {
       user.userId,
       unfollow_target_id,
     );
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(ERouteName.SAVE_GENERAL_INFO)
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  async saveGeneralInfo(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('phone') phone: string,
+    @Body('id') id: string,
+  ) {
+    return await this.userService.saveGeneralInfo({ file, phone, id });
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(ERouteName.SAVE_CARD_INFO)
+  async saveCardInfo(
+    @Body()
+    { paymentMethod, id }: { paymentMethod: PaymentMethod; id: string },
+  ): Promise<void> {
+    return await this.userService.saveCardInfo({ id, paymentMethod });
+
   }
 }

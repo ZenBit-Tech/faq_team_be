@@ -9,12 +9,22 @@ export enum ERouteName {
   GET_REVIEWS = '/user/reviews',
   DELETE_REVIEW = '/user/review/:id',
   USER_UPDATEBYID_ROUTE = 'update/:id',
+  DELETE_USER = 'user-delete/:id',
+  GET_USERS_ROUTE = 'get-all',
   SEND_OTP = 'send-otp',
   VERIFY_OTP = 'verify-otp',
+
 
   FOLLOW = ':id/follow',
   UNFOLLOW = ':id/unfollow',
   ISFOLLOWING = '/:id/is-following',
+
+  SAVE_ROLE = 'save-role',
+  SAVE_GENERAL_INFO = 'save-general-info',
+  SAVE_ADDRESS = 'save-address',
+  SAVE_CARD_INFO = 'save-card-info',
+  SAVE_SIZES = 'save-sizes',
+
 
   GOOGLE_ROUTE = 'google',
   GOOGLE_REDIRECT = 'redirect',

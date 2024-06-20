@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as randomize from 'randomatic';
+
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { UserDto } from 'src/modules/auth/dto/user.response.dto';
 import { EMailTemplate } from 'src/modules/mail/enums/mail-template.enum';

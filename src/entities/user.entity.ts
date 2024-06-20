@@ -5,6 +5,8 @@ import { EUserRole } from '../common/enums/user-role.enum';
 import { EUserStatus } from '../common/enums/user-status.enum';
 import { FollowEntity } from './follow.entity';
 import { BaseEntity } from './models/base.entity';
+import { OrderEntity } from './order.entity';
+import { ProductEntity } from './product.entity';
 import { RateEntity } from './rate.entity';
 import { ReviewEntity } from './review.entity';
 
@@ -55,6 +57,9 @@ export class UserEntity extends BaseEntity {
   country: string;
 
   @Column({ nullable: true })
+  state: string;
+
+  @Column({ nullable: true })
   city: string;
 
   @Column({ nullable: true })
@@ -63,11 +68,18 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   jeans_size: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'double', nullable: true })
   shoes_size: number;
 
   @Column({ nullable: true })
   avgRate: number;
+  
+  @Column({ nullable: true })
+  stripe_id: string;
+
+  @Column({ nullable: true })
+  payment_method_id: string;
+
 
   @OneToMany(() => RateEntity, (entity) => entity.rates)
   rates?: RateEntity[];
@@ -81,9 +93,17 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => ReviewEntity, (entity) => entity.author)
   user_reviews?: ReviewEntity[];
 
+
   @OneToMany(() => FollowEntity, (entity) => entity.follower)
   followers?: FollowEntity[];
 
   @OneToMany(() => FollowEntity, (entity) => entity.following)
   followings?: FollowEntity[];
+
+  @OneToMany(() => OrderEntity, (entity) => entity.buyer_id)
+  orders?: OrderEntity[];
+
+  @OneToMany(() => ProductEntity, (entity) => entity.vendor_id)
+  products?: ProductEntity[];
+
 }
