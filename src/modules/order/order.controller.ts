@@ -12,7 +12,7 @@ import { ERouteName } from 'src/common/enums/route-name.enum';
 import { OrderEntity } from 'src/entities/order.entity';
 import { ProductEntity } from 'src/entities/product.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
-import { OrderService } from 'src/modules/product/order.service';
+import { OrderService } from 'src/modules/order/order.service';
 
 @ApiTags('Order')
 @Controller(ERouteName.ORDERS_ROUTE)

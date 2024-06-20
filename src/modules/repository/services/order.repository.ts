@@ -30,6 +30,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     extraConditions: string[] = [],
   ): SelectQueryBuilder<OrderEntity> {
     const qb = this.createQueryBuilder('order');
+
     qb.innerJoin('order.product', 'product')
       .innerJoin('product.owner', 'user')
       .select(`${aggregate}(order.${selectField})`, 'result')
@@ -47,9 +48,11 @@ export class OrderRepository extends Repository<OrderEntity> {
     userId: string,
   ): Promise<{ totalSales: number; lastWeekPercentage: number }> {
     const qbAllTime = this.getQueryBuilder(userId, 'price', 'SUM');
+
     const resultAllTime = await this.executeQuery<{ result: string }>(
       qbAllTime,
     );
+
     const totalSalesAllTime = parseFloat(resultAllTime.result) || 0;
 
     const oneWeekAgo = new Date();
@@ -61,6 +64,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     const resultLastWeek = await this.executeQuery<{ result: string }>(
       qbLastWeek.setParameters({ oneWeekAgo }),
     );
+
     const totalSalesLastWeek = parseFloat(resultLastWeek.result) || 0;
 
     return {
@@ -76,9 +80,11 @@ export class OrderRepository extends Repository<OrderEntity> {
     userId: string,
   ): Promise<{ totalOrders: number; lastWeekOrderPercentage: number }> {
     const qbAllTime = this.getQueryBuilder(userId, 'id', 'COUNT');
+
     const resultAllTime = await this.executeQuery<{ result: string }>(
       qbAllTime,
     );
+
     const totalOrdersAllTime = parseFloat(resultAllTime.result) || 0;
 
     const oneWeekAgo = new Date();
@@ -105,9 +111,11 @@ export class OrderRepository extends Repository<OrderEntity> {
     userId: string,
   ): Promise<{ averageSales: number; lastWeekAveragePercentage: number }> {
     const qbAllTime = this.getQueryBuilder(userId, 'price', 'AVG');
+
     const resultAllTime = await this.executeQuery<{ result: string }>(
       qbAllTime,
     );
+
     const averageSalesAllTime = parseFloat(resultAllTime.result) || 0;
 
     const oneWeekAgo = new Date();
@@ -119,6 +127,7 @@ export class OrderRepository extends Repository<OrderEntity> {
     const resultLastWeek = await this.executeQuery<{ result: string }>(
       qbLastWeek.setParameters({ oneWeekAgo }),
     );
+
     const averageSalesLastWeek = parseFloat(resultLastWeek.result) || 0;
 
     return {
