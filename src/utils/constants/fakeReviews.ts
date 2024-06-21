@@ -21,7 +21,6 @@ buyer_ids.map((buyer_id) => {
       review_target_id: vendor_id,
       review_text: lorem_description,
     };
-
     index++;
 
     reviews.push(review);
