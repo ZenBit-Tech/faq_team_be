@@ -41,7 +41,7 @@ export class OrderRepository extends Repository<OrderEntity> {
   }
 
   private getPercentage(allTime: number, lastWeek: number): number {
-    return allTime ? (lastWeek / allTime - 1) * 100 : 0;
+    return Math.floor(allTime ? (lastWeek / allTime - 1) * 100 : 0);
   }
 
   public async getTotalSalesForUser(
@@ -53,25 +53,25 @@ export class OrderRepository extends Repository<OrderEntity> {
       qbAllTime,
     );
 
-    const totalSalesAllTime = parseFloat(resultAllTime.result) || 0;
+    const totalSalesAllTime = parseInt(resultAllTime.result) || 0;
 
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-    const qbLastWeek = this.getQueryBuilder(userId, 'price', 'SUM', [
-      'order.created_at >= :oneWeekAgo',
+    const qbBeforeLastWeek = this.getQueryBuilder(userId, 'price', 'SUM', [
+      'order.created_at <= :oneWeekAgo',
     ]);
-    const resultLastWeek = await this.executeQuery<{ result: string }>(
-      qbLastWeek.setParameters({ oneWeekAgo }),
+    const resultBeforeLastWeek = await this.executeQuery<{ result: string }>(
+      qbBeforeLastWeek.setParameters({ oneWeekAgo }),
     );
 
-    const totalSalesLastWeek = parseFloat(resultLastWeek.result) || 0;
+    const totalSalesBeforeLastWeek = parseInt(resultBeforeLastWeek.result) || 0;
 
     return {
       totalSales: totalSalesAllTime,
       lastWeekPercentage: this.getPercentage(
+        totalSalesBeforeLastWeek,
         totalSalesAllTime,
-        totalSalesLastWeek,
       ),
     };
   }
@@ -85,24 +85,25 @@ export class OrderRepository extends Repository<OrderEntity> {
       qbAllTime,
     );
 
-    const totalOrdersAllTime = parseFloat(resultAllTime.result) || 0;
+    const totalOrdersAllTime = parseInt(resultAllTime.result) || 0;
 
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-    const qbLastWeek = this.getQueryBuilder(userId, 'id', 'COUNT', [
-      'order.created_at >= :oneWeekAgo',
+    const qbBeforeLastWeek = this.getQueryBuilder(userId, 'id', 'COUNT', [
+      'order.created_at <= :oneWeekAgo',
     ]);
-    const resultLastWeek = await this.executeQuery<{ result: string }>(
-      qbLastWeek.setParameters({ oneWeekAgo }),
+    const resultBeforeLastWeek = await this.executeQuery<{ result: string }>(
+      qbBeforeLastWeek.setParameters({ oneWeekAgo }),
     );
-    const totalOrdersLastWeek = parseFloat(resultLastWeek.result) || 0;
+    const totalOrdersBeforeLastWeek =
+      parseInt(resultBeforeLastWeek.result) || 0;
 
     return {
       totalOrders: totalOrdersAllTime,
       lastWeekOrderPercentage: this.getPercentage(
+        totalOrdersBeforeLastWeek,
         totalOrdersAllTime,
-        totalOrdersLastWeek,
       ),
     };
   }
@@ -116,7 +117,7 @@ export class OrderRepository extends Repository<OrderEntity> {
       qbAllTime,
     );
 
-    const averageSalesAllTime = parseFloat(resultAllTime.result) || 0;
+    const averageSalesAllTime = parseInt(resultAllTime.result) || 0;
 
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -128,7 +129,7 @@ export class OrderRepository extends Repository<OrderEntity> {
       qbLastWeek.setParameters({ oneWeekAgo }),
     );
 
-    const averageSalesLastWeek = parseFloat(resultLastWeek.result) || 0;
+    const averageSalesLastWeek = parseInt(resultLastWeek.result) || 0;
 
     return {
       averageSales: averageSalesAllTime,
@@ -141,23 +142,28 @@ export class OrderRepository extends Repository<OrderEntity> {
 
   public async getTotalSalesPerMonth(
     userId: string,
-  ): Promise<{ month: string; total: number }[]> {
+  ): Promise<{ month: number; total: number }[]> {
     const qb = this.createQueryBuilder('order');
     qb.innerJoin('order.product', 'product')
       .innerJoin('product.owner', 'user')
-      .select('DATE_FORMAT(order.created_at, "%Y-%m")', 'month')
+      .select('DATE_FORMAT(order.created_at, "%m")', 'month')
       .addSelect('SUM(order.price)', 'total')
       .where('user.id = :userId', { userId })
       .andWhere('order.created_at >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)')
       .groupBy('month')
       .orderBy('month', 'ASC');
 
-    const result =
-      await this.executeQuery<{ month: string; total: string }[]>(qb);
+    const result = await qb.getRawMany();
+    if (!result) {
+      throw new HttpException(
+        EErrorMessage.QUERY_FAILED,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return result.map((row) => ({
-      month: row.month,
-      total: parseFloat(row.total),
+      month: parseInt(row.month),
+      total: parseInt(row.total),
     }));
   }
 
@@ -175,14 +181,17 @@ export class OrderRepository extends Repository<OrderEntity> {
       .orderBy('totalSales', 'DESC')
       .limit(4);
 
-    const result =
-      await this.executeQuery<
-        { category: string; totalSales: string; orderCount: string }[]
-      >(qb);
+    const result = await qb.getRawMany();
+    if (!result) {
+      throw new HttpException(
+        EErrorMessage.QUERY_FAILED,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return result.map((row) => ({
       category: row.category,
-      totalSales: parseFloat(row.totalSales),
+      totalSales: parseInt(row.totalSales),
       orderCount: parseInt(row.orderCount, 10),
     }));
   }
@@ -197,10 +206,22 @@ export class OrderRepository extends Repository<OrderEntity> {
     qb.innerJoin('order.product', 'product')
       .innerJoin('product.owner', 'user')
       .where('user.id = :userId', { userId })
-      .andWhere('order.created_at >= :threeDaysAgo', { threeDaysAgo });
+      .andWhere('order.created_at >= :threeDaysAgo', { threeDaysAgo })
+      .select([
+        'order.id',
+        'order.price',
+        'product.id',
+        'product.product_name',
+      ]);
 
-    const orders = await this.executeQuery<OrderEntity[]>(qb);
+    const result = await qb.getRawMany();
+    if (!result) {
+      throw new HttpException(
+        EErrorMessage.QUERY_FAILED,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
-    return orders;
+    return result;
   }
 }

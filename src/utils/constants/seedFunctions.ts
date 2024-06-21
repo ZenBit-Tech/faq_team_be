@@ -2,6 +2,8 @@ import { format, subYears } from 'date-fns';
 import * as seedrandom from 'seedrandom';
 import { v4 as uuidv4 } from 'uuid';
 
+import { random_date_format } from 'src/utils/constants/fakeConstants';
+
 export const generateSeededUUIDs = (seed: string, count: number): string[] => {
   const rng = seedrandom(seed);
   const uuids = [];
@@ -34,7 +36,7 @@ export const getRandomDateWithinLastYear = (): string => {
 
   const randomDate = new Date(randomTimestamp);
 
-  const formattedRandomDate = format(randomDate, 'yyyy-MM-dd');
+  const formattedRandomDate = format(randomDate, random_date_format);
 
   return formattedRandomDate;
 };

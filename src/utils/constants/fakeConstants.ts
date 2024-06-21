@@ -3,6 +3,8 @@ export const product_id_seed = 'product';
 export const number_of_products = 1000;
 export const number_of_orders = 1000;
 
+export const random_date_format = 'yyyy-MM-dd';
+
 export const vendor_ids = [
   '8a7d3b5a-2d4e-4f6a-8a3e-7b6d5f3e5a6d',
   '6d3b4f5a-2e4d-4a7e-9b3d-8a3b5d3e5a7e',

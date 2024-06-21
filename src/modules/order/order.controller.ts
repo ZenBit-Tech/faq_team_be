@@ -21,24 +21,24 @@ export class OrderController {
 
   //TODO: move this route to product modules when it is created (it is here for testing)
   @ApiBearerAuth()
-  @Get(ERouteName.GET_PRODUCTS_ROUTE)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_PRODUCTS_ROUTE)
   @HttpCode(HttpStatus.OK)
   async getAllProducts(): Promise<ProductEntity[]> {
     return await this.orderService.getAllProducts();
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_ORDERS_ROUTE)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_ORDERS_ROUTE)
   @HttpCode(HttpStatus.OK)
   async getAllOrders(): Promise<OrderEntity[]> {
     return await this.orderService.getAllOrders();
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_TOTAL_SALES_ROUTE)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_TOTAL_SALES_ROUTE)
   @HttpCode(HttpStatus.OK)
   async getTotalSales(
     @Query('userId') userId: string,
@@ -47,8 +47,8 @@ export class OrderController {
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_AVERAGE_SALES_ROUTE)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_AVERAGE_SALES_ROUTE)
   @HttpCode(HttpStatus.OK)
   async getAverageSales(
     @Query('userId') userId: string,
@@ -57,8 +57,8 @@ export class OrderController {
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_NUMBER_OF_ORDERS_ROUTE)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_NUMBER_OF_ORDERS_ROUTE)
   @HttpCode(HttpStatus.OK)
   async getNumberOfOrders(
     @Query('userId') userId: string,
@@ -67,18 +67,18 @@ export class OrderController {
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_TOTAL_SALES_PER_MONTH)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_TOTAL_SALES_PER_MONTH)
   @HttpCode(HttpStatus.OK)
   async getTotalSalesPerMonth(
     @Query('userId') userId: string,
-  ): Promise<{ month: string; total: number }[]> {
+  ): Promise<{ month: number; total: number }[]> {
     return await this.orderService.getTotalSalesPerMonth(userId);
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_TOTAL_SALES_FOR_CATEGORIES)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_TOTAL_SALES_FOR_CATEGORIES)
   @HttpCode(HttpStatus.OK)
   async getTotalSalesForCategories(
     @Query('userId') userId: string,
@@ -87,8 +87,8 @@ export class OrderController {
   }
 
   @ApiBearerAuth()
-  @Get(ERouteName.GET_LAST_ORDERS)
   @UseGuards(JwtAuthGuard)
+  @Get(ERouteName.GET_LAST_ORDERS)
   @HttpCode(HttpStatus.OK)
   async getLastOrders(@Query('userId') userId: string): Promise<OrderEntity[]> {
     return await this.orderService.getLastOrders(userId);

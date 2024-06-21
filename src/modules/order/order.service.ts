@@ -40,7 +40,7 @@ export class OrderService {
 
   public async getTotalSalesPerMonth(
     userId: string,
-  ): Promise<{ month: string; total: number }[]> {
+  ): Promise<{ month: number; total: number }[]> {
     return await this.orderRepository.getTotalSalesPerMonth(userId);
   }
 
