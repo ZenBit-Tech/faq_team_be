@@ -25,6 +25,7 @@ export enum ERouteName {
   SAVE_SIZES = 'save-sizes',
 
   ORDERS_ROUTE = 'orders',
+  PRODUCTS_ROUTE = 'products',
   GET_PRODUCTS_ROUTE = 'get-products',
   GET_ORDERS_ROUTE = 'get-orders',
   GET_TOTAL_SALES_ROUTE = 'get-total-sales',
