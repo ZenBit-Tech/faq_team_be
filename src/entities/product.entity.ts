@@ -13,7 +13,7 @@ export class ProductEntity extends BaseEntity {
   @Column()
   product_name: string;
 
-  @Column()
+  @Column('longtext')
   description: string;
 
   @Column()

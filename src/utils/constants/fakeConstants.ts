@@ -1,7 +1,12 @@
 export const order_id_seed = 'order';
 export const product_id_seed = 'product';
+export const rate_id = 'rate';
+export const review_id = 'review';
 export const number_of_products = 1000;
 export const number_of_orders = 1000;
+
+export const number_of_rates = 50;
+export const number_of_reviews = 50;
 
 export const vendor_ids = [
   '8a7d3b5a-2d4e-4f6a-8a3e-7b6d5f3e5a6d',
@@ -39,6 +44,9 @@ export const products_quantity = 1000;
 export const orders_quantity = 1000;
 export const max_price = 1000;
 export const min_price = 0;
+
+export const min_rate = 1;
+export const max_rate = 5;
 
 export const product_names = [
   'Classic Cotton Tee',
