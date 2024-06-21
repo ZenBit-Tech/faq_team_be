@@ -18,13 +18,13 @@ export class UsersFilterDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  order?: ESort.DESC | ESort.ASC;
+  order: ESort;
 
   @ApiProperty()
   @IsOptional()
   @IsPositive()
   @IsNumber()
-  page: number;
+  page: number = 1;
 
   @ApiProperty()
   @IsOptional()

@@ -3,15 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { PaymentMethod } from '@stripe/stripe-js';
 import * as bcrypt from 'bcrypt';
 import Stripe from 'stripe';
-import { Brackets } from 'typeorm';
 
 import { EAwsBucketPath } from 'src/common/enums/aws-bucket-path.enum';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
-import { ESort } from 'src/common/enums/sort.enum';
-import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
-import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.request.dto';
+import { UsersFilterResponseDto } from 'src/modules/user/dto/filter-users.response.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { S3Service } from 'src/modules/user/services/s3.service';
 
@@ -159,38 +157,8 @@ export class UserService {
 
   public async getAllUsers(
     dto: UsersFilterDto,
-  ): Promise<{ totalCount: number; users: UserEntity[] }> {
-    const { page = 1, limit, order = ESort.ASC, search = '', role } = dto;
-
-    const queryBuilder = this.userRepository
-      .createQueryBuilder('user')
-      .where('user.is_deleted_by_admin = :isDeleted', { isDeleted: false })
-      .andWhere('user.user_role != :superAdminRole', {
-        superAdminRole: EUserRole.SUPERADMIN,
-      });
-
-    if (role) {
-      queryBuilder.andWhere('user.user_role = :role', { role });
-    }
-
-    if (search) {
-      queryBuilder.andWhere(
-        new Brackets((qb) => {
-          qb.where('user.full_name LIKE :search', {
-            search: `%${search}%`,
-          }).orWhere('user.email LIKE :search', { search: `%${search}%` });
-        }),
-      );
-    }
-
-    queryBuilder
-      .orderBy('user.full_name', order)
-      .skip(limit ? (page - 1) * limit : 0)
-      .take(limit);
-
-    const [users, totalCount] = await queryBuilder.getManyAndCount();
-
-    return { totalCount, users };
+  ): Promise<UsersFilterResponseDto> {
+    return await this.userRepository.getAllUsers(dto);
   }
 
   public async softDelete(id: string): Promise<void> {
