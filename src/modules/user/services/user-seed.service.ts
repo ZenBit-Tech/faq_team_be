@@ -5,17 +5,17 @@ import { Not } from 'typeorm';
 
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { OrderRepository } from 'src/modules/repository/services/order.repository';
-import { ProductRepository } from 'src/modules/repository/services/product.repository';
+// import { ProductRepository } from 'src/modules/repository/services/product.repository';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
 import { orders } from 'src/utils/constants/fakeOrders';
-import { products } from 'src/utils/constants/fakeProducts';
+//import { products } from 'src/utils/constants/fakeProducts';
 import { users } from 'src/utils/constants/fakeUsers';
 
 @Injectable()
 export class UserSeederService implements OnModuleInit {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly productRepository: ProductRepository,
+    // private readonly productRepository: ProductRepository,
     private readonly orderRepository: OrderRepository,
 
     private readonly configService: ConfigService,
@@ -34,10 +34,10 @@ export class UserSeederService implements OnModuleInit {
 
     await this.userRepository.save(users);
 
-    const isProductsExist = await this.productRepository.find();
-    if (!isProductsExist.length) {
-      await this.productRepository.save(products);
-    }
+    // const isProductsExist = await this.productRepository.find();
+    // if (!isProductsExist.length) {
+    //   await this.productRepository.save(products);
+    // }
 
     const isOrdersExist = await this.orderRepository.find();
     if (!isOrdersExist.length) {
