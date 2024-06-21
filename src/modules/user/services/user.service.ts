@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PaymentMethod } from '@stripe/stripe-js';
 import * as bcrypt from 'bcrypt';
 import Stripe from 'stripe';
-import { FindOptionsWhere, Like, Not } from 'typeorm';
+import { Brackets } from 'typeorm';
 
 import { EAwsBucketPath } from 'src/common/enums/aws-bucket-path.enum';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
@@ -160,24 +160,36 @@ export class UserService {
   public async getAllUsers(
     dto: UsersFilterDto,
   ): Promise<{ totalCount: number; users: UserEntity[] }> {
-    const { page = 1, limit, order = ESort.ASC, search = '' } = dto;
+    const { page = 1, limit, order = ESort.ASC, search = '', role } = dto;
 
-    const conditions:
-      | FindOptionsWhere<UserEntity>
-      | FindOptionsWhere<UserEntity[]> = {
-      is_deleted_by_admin: false,
-      user_role: Not(EUserRole.SUPERADMIN),
-      ...(search
-        ? { full_name: Like(`%${search}%`), email: Like(`%${search}%`) }
-        : {}),
-    };
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .where('user.is_deleted_by_admin = :isDeleted', { isDeleted: false })
+      .andWhere('user.user_role != :superAdminRole', {
+        superAdminRole: EUserRole.SUPERADMIN,
+      });
 
-    const [users, totalCount] = await this.userRepository.findAndCount({
-      where: conditions,
-      order: { full_name: order },
-      skip: limit ? (page - 1) * limit : 0,
-      take: limit,
-    });
+    if (role) {
+      queryBuilder.andWhere('user.user_role = :role', { role });
+    }
+
+    if (search) {
+      queryBuilder.andWhere(
+        new Brackets((qb) => {
+          qb.where('user.full_name LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('user.email LIKE :search', { search: `%${search}%` });
+        }),
+      );
+    }
+
+    queryBuilder
+      .orderBy('user.full_name', order)
+      .skip(limit ? (page - 1) * limit : 0)
+      .take(limit);
+
+    const [users, totalCount] = await queryBuilder.getManyAndCount();
+
     return { totalCount, users };
   }
 
