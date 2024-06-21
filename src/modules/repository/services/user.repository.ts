@@ -17,6 +17,12 @@ export class UserRepository extends Repository<UserEntity> {
       'user.id = user_reviews.author',
     );
 
+    qb.leftJoinAndSelect(
+      'user.products',
+      'products',
+      'user.id = products.vendor_id',
+    );
+
     qb.leftJoin(
       'user_reviews.review_target',
       'review_target',
