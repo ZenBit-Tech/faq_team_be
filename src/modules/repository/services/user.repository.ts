@@ -4,8 +4,8 @@ import { Brackets, DataSource, Repository } from 'typeorm';
 import { ESort } from 'src/common/enums/sort.enum';
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
-import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
-import { GetAllUsersOutput } from 'src/modules/user/types/get-all-users.type';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.request.dto';
+import { UsersFilterResponseDto } from 'src/modules/user/dto/filter-users.response.dto';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
@@ -50,7 +50,9 @@ export class UserRepository extends Repository<UserEntity> {
     return await qb.getOne();
   }
 
-  public async getAllUsers(dto: UsersFilterDto): Promise<GetAllUsersOutput> {
+  public async getAllUsers(
+    dto: UsersFilterDto,
+  ): Promise<UsersFilterResponseDto> {
     const { page, limit, order = ESort.ASC, search = '', role } = dto;
 
     const queryBuilder = this.createQueryBuilder('user')

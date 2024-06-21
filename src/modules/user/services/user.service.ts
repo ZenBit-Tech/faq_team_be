@@ -8,10 +8,10 @@ import { EAwsBucketPath } from 'src/common/enums/aws-bucket-path.enum';
 import { EErrorMessage } from 'src/common/enums/error-message.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/modules/repository/services/user.repository';
-import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.request.dto';
+import { UsersFilterResponseDto } from 'src/modules/user/dto/filter-users.response.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { S3Service } from 'src/modules/user/services/s3.service';
-import { GetAllUsersOutput } from 'src/modules/user/types/get-all-users.type';
 
 @Injectable()
 export class UserService {
@@ -155,7 +155,9 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
-  public async getAllUsers(dto: UsersFilterDto): Promise<GetAllUsersOutput> {
+  public async getAllUsers(
+    dto: UsersFilterDto,
+  ): Promise<UsersFilterResponseDto> {
     return await this.userRepository.getAllUsers(dto);
   }
 

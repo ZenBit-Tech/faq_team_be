@@ -3,8 +3,8 @@ import { Brackets, DataSource, Repository } from 'typeorm';
 
 import { ESort } from 'src/common/enums/sort.enum';
 import { ProductEntity } from 'src/entities/product.entity';
-import { ProductsFilterDto } from 'src/modules/product/dto/filter-products.dto';
-import { GetAllProductsOutput } from 'src/modules/product/types/get-all-products.type';
+import { ProductsFilterDto } from 'src/modules/product/dto/filter-products.request.dto';
+import { ProductsFilterResponseDto } from 'src/modules/product/dto/filter-products.response.dto';
 
 @Injectable()
 export class ProductRepository extends Repository<ProductEntity> {
@@ -13,11 +13,11 @@ export class ProductRepository extends Repository<ProductEntity> {
   }
   public async getAllProducts(
     dto: ProductsFilterDto,
-  ): Promise<GetAllProductsOutput> {
+  ): Promise<ProductsFilterResponseDto> {
     const {
-      page = 1,
-      limit = 5,
-      search = '',
+      page,
+      limit,
+      search,
       size,
       style,
       color,
