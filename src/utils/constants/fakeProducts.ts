@@ -5,8 +5,11 @@ import {
   min_price,
   number_of_products,
   product_categories,
+  product_colors,
   product_id_seed,
   product_names,
+  product_sizes,
+  product_styles,
   products_quantity,
   vendor_ids,
 } from 'src/utils/constants/fakeConstants';
@@ -32,6 +35,9 @@ for (let i = 0; i < product_ids.length; i++) {
       product_categories[
         getRandomIntInclusive(0, product_categories.length - 1)
       ],
+    color: product_colors[getRandomIntInclusive(0, product_colors.length - 1)],
+    size: product_sizes[getRandomIntInclusive(0, product_sizes.length - 1)],
+    style: product_styles[getRandomIntInclusive(0, product_styles.length - 1)],
     created_at: fake_product_creation_date,
   };
   products.push(product);

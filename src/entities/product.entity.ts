@@ -25,6 +25,15 @@ export class ProductEntity extends BaseEntity {
   @Column()
   category: string;
 
+  @Column()
+  color: string;
+
+  @Column()
+  size: string;
+
+  @Column()
+  style: string;
+
   @Column({ nullable: true })
   image: string;
 

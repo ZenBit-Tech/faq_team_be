@@ -29,6 +29,24 @@ export const product_categories = [
   'Coats',
   'Underwear',
 ];
+export const product_sizes = ['XS', 'S', 'M', 'L', 'XL'];
+export const product_colors = [
+  'Red',
+  'Orange',
+  'Yellow',
+  'Green',
+  'Blue',
+  'Purple',
+  'Violet',
+  'Black',
+];
+export const product_styles = [
+  'Essentials',
+  'Casual',
+  'Event Dressing',
+  'Wedding Guest',
+  'Streetstyle',
+];
 
 export const lorem_description =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
@@ -37,7 +55,7 @@ export const fake_product_creation_date = '2022-01-01';
 
 export const products_quantity = 1000;
 export const orders_quantity = 1000;
-export const max_price = 1000;
+export const max_price = 10000;
 export const min_price = 0;
 
 export const product_names = [
