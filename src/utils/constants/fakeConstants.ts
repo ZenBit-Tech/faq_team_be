@@ -5,6 +5,7 @@ export const review_id = 'review';
 export const number_of_products = 1000;
 export const number_of_orders = 1000;
 
+export const random_date_format = 'yyyy-MM-dd';
 export const number_of_rates = 50;
 export const number_of_reviews = 50;
 
