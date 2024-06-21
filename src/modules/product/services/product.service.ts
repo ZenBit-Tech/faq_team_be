@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { ProductEntity } from 'src/entities/product.entity';
 import { ProductsFilterDto } from 'src/modules/product/dto/filter-products.dto';
+import { GetAllProductsOutput } from 'src/modules/product/types/get-all-products.type';
 import { ProductRepository } from 'src/modules/repository/services/product.repository';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class ProductService {
 
   public async getAllProducts(
     dto: ProductsFilterDto,
-  ): Promise<{ totalCount: number; products: ProductEntity[] }> {
+  ): Promise<GetAllProductsOutput> {
     return await this.productRepository.getAllProducts(dto);
   }
 }

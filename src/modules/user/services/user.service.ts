@@ -11,6 +11,7 @@ import { UserRepository } from 'src/modules/repository/services/user.repository'
 import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { S3Service } from 'src/modules/user/services/s3.service';
+import { GetAllUsersOutput } from 'src/modules/user/types/get-all-users.type';
 
 @Injectable()
 export class UserService {
@@ -154,9 +155,7 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
-  public async getAllUsers(
-    dto: UsersFilterDto,
-  ): Promise<{ totalCount: number; users: UserEntity[] }> {
+  public async getAllUsers(dto: UsersFilterDto): Promise<GetAllUsersOutput> {
     return await this.userRepository.getAllUsers(dto);
   }
 

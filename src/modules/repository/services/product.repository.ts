@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Brackets, DataSource, Repository } from 'typeorm';
 
+import { ESort } from 'src/common/enums/sort.enum';
 import { ProductEntity } from 'src/entities/product.entity';
 import { ProductsFilterDto } from 'src/modules/product/dto/filter-products.dto';
+import { GetAllProductsOutput } from 'src/modules/product/types/get-all-products.type';
 
 @Injectable()
 export class ProductRepository extends Repository<ProductEntity> {
@@ -11,7 +13,7 @@ export class ProductRepository extends Repository<ProductEntity> {
   }
   public async getAllProducts(
     dto: ProductsFilterDto,
-  ): Promise<{ totalCount: number; products: ProductEntity[] }> {
+  ): Promise<GetAllProductsOutput> {
     const {
       page = 1,
       limit = 5,
@@ -21,7 +23,7 @@ export class ProductRepository extends Repository<ProductEntity> {
       color,
       min,
       max,
-      order = 'ASC',
+      order = ESort.ASC,
     } = dto;
 
     const queryBuilder = this.createQueryBuilder('product');

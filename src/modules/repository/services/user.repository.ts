@@ -5,6 +5,7 @@ import { ESort } from 'src/common/enums/sort.enum';
 import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
 import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
+import { GetAllUsersOutput } from 'src/modules/user/types/get-all-users.type';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
@@ -49,10 +50,8 @@ export class UserRepository extends Repository<UserEntity> {
     return await qb.getOne();
   }
 
-  public async getAllUsers(
-    dto: UsersFilterDto,
-  ): Promise<{ totalCount: number; users: UserEntity[] }> {
-    const { page = 1, limit, order = ESort.ASC, search = '', role } = dto;
+  public async getAllUsers(dto: UsersFilterDto): Promise<GetAllUsersOutput> {
+    const { page, limit, order = ESort.ASC, search = '', role } = dto;
 
     const queryBuilder = this.createQueryBuilder('user')
       .where('user.is_deleted_by_admin = :isDeleted', { isDeleted: false })

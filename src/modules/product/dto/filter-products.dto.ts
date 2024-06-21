@@ -1,39 +1,50 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
+import { ESort } from 'src/common/enums/sort.enum';
+
 export class ProductsFilterDto {
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  search?: string;
+  search: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  size?: string;
+  size: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  style?: string;
+  style: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  color?: string;
+  color: string;
 
   @IsOptional()
   @IsNumber()
   min: number;
 
+  @ApiProperty()
   @IsOptional()
   @IsNumber()
   max: number;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  order?: 'ASC' | 'DESC';
+  order: ESort;
 
+  @ApiProperty()
   @IsOptional()
   @IsNumber()
-  page?: number;
+  page: number = 1;
 
+  @ApiProperty()
   @IsOptional()
   @IsNumber()
-  limit?: number;
+  limit: number;
 }
