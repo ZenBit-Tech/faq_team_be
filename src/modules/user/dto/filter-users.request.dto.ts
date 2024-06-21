@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
 import { ESort } from 'src/common/enums/sort.enum';
+import { EUserRole } from 'src/common/enums/user-role.enum';
 
 export class UsersFilterDto {
   @ApiProperty()
@@ -12,13 +13,18 @@ export class UsersFilterDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  order?: ESort.DESC | ESort.ASC;
+  role: EUserRole;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  order: ESort;
 
   @ApiProperty()
   @IsOptional()
   @IsPositive()
   @IsNumber()
-  page: number;
+  page: number = 1;
 
   @ApiProperty()
   @IsOptional()

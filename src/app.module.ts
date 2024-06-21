@@ -5,6 +5,7 @@ import { MysqlModule } from 'src/common/configs/database/mysql.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { GoogleAuthModule } from 'src/modules/google-auth/google-auth.module';
 import { OrderModule } from 'src/modules/order/order.module';
+import { ProductModule } from 'src/modules/product/product.module';
 import { RepositoryModule } from 'src/modules/repository/repository.module';
 import { UserModule } from 'src/modules/user/user.module';
 
@@ -20,6 +21,7 @@ import { UserModule } from 'src/modules/user/user.module';
     UserModule,
     RepositoryModule,
     OrderModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],
