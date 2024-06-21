@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { Brackets, DataSource, Repository } from 'typeorm';
 
+import { ESort } from 'src/common/enums/sort.enum';
+import { EUserRole } from 'src/common/enums/user-role.enum';
 import { UserEntity } from 'src/entities/user.entity';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.dto';
 
 @Injectable()
 export class UserRepository extends Repository<UserEntity> {
@@ -44,5 +47,40 @@ export class UserRepository extends Repository<UserEntity> {
     qb.where('user.id = :id', { id });
 
     return await qb.getOne();
+  }
+
+  public async getAllUsers(
+    dto: UsersFilterDto,
+  ): Promise<{ totalCount: number; users: UserEntity[] }> {
+    const { page = 1, limit, order = ESort.ASC, search = '', role } = dto;
+
+    const queryBuilder = this.createQueryBuilder('user')
+      .where('user.is_deleted_by_admin = :isDeleted', { isDeleted: false })
+      .andWhere('user.user_role != :superAdminRole', {
+        superAdminRole: EUserRole.SUPERADMIN,
+      });
+
+    if (role) {
+      queryBuilder.andWhere('user.user_role = :role', { role });
+    }
+
+    if (search) {
+      queryBuilder.andWhere(
+        new Brackets((qb) => {
+          qb.where('user.full_name LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('user.email LIKE :search', { search: `%${search}%` });
+        }),
+      );
+    }
+
+    queryBuilder
+      .orderBy('user.full_name', order)
+      .skip(limit ? (page - 1) * limit : 0)
+      .take(limit);
+
+    const [users, totalCount] = await queryBuilder.getManyAndCount();
+
+    return { totalCount, users };
   }
 }

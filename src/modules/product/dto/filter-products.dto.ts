@@ -1,21 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-  ValidateNested,
-} from 'class-validator';
-
-class PriceRangeDto {
-  @IsNumber()
-  @Min(0)
-  min: number;
-
-  @IsNumber()
-  @Min(0)
-  max: number;
-}
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class ProductsFilterDto {
   @IsOptional()
@@ -35,9 +18,12 @@ export class ProductsFilterDto {
   color?: string;
 
   @IsOptional()
-  @ValidateNested()
-  @Type(() => PriceRangeDto)
-  priceRange?: PriceRangeDto;
+  @IsNumber()
+  min: number;
+
+  @IsOptional()
+  @IsNumber()
+  max: number;
 
   @IsOptional()
   @IsString()
@@ -45,11 +31,9 @@ export class ProductsFilterDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(1)
   page?: number;
 
   @IsOptional()
   @IsNumber()
-  @Min(1)
   limit?: number;
 }
