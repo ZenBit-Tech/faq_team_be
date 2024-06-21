@@ -3,13 +3,14 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  //   Query,
+  Query,
   //  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { ERouteName } from 'src/common/enums/route-name.enum';
 import { ProductEntity } from 'src/entities/product.entity';
+import { ProductsFilterDto } from 'src/modules/product/dto/filter-products.dto';
 // import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
 import { ProductService } from 'src/modules/product/product.service';
 
@@ -21,7 +22,9 @@ export class ProductController {
   @ApiBearerAuth()
   @Get(ERouteName.GET_PRODUCTS_ROUTE)
   @HttpCode(HttpStatus.OK)
-  async getAllProducts(): Promise<ProductEntity[]> {
-    return await this.productService.getAllProducts();
+  async getAllProducts(
+    @Query() query: ProductsFilterDto,
+  ): Promise<{ totalCount: number; products: ProductEntity[] }> {
+    return await this.productService.getAllProducts(query);
   }
 }
