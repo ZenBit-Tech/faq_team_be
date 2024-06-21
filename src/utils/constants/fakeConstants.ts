@@ -1,9 +1,13 @@
 export const order_id_seed = 'order';
 export const product_id_seed = 'product';
+export const rate_id = 'rate';
+export const review_id = 'review';
 export const number_of_products = 1000;
 export const number_of_orders = 1000;
 
 export const random_date_format = 'yyyy-MM-dd';
+export const number_of_rates = 50;
+export const number_of_reviews = 50;
 
 export const vendor_ids = [
   '8a7d3b5a-2d4e-4f6a-8a3e-7b6d5f3e5a6d',
@@ -31,16 +35,37 @@ export const product_categories = [
   'Coats',
   'Underwear',
 ];
+export const product_sizes = ['XS', 'S', 'M', 'L', 'XL'];
+export const product_colors = [
+  'Red',
+  'Orange',
+  'Yellow',
+  'Green',
+  'Blue',
+  'Purple',
+  'Violet',
+  'Black',
+];
+export const product_styles = [
+  'Essentials',
+  'Casual',
+  'Event Dressing',
+  'Wedding Guest',
+  'Streetstyle',
+];
 
 export const lorem_description =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
 export const fake_product_creation_date = '2022-01-01';
 
 export const products_quantity = 1000;
 export const orders_quantity = 1000;
-export const max_price = 1000;
+export const max_price = 10000;
 export const min_price = 0;
+
+export const min_rate = 1;
+export const max_rate = 5;
 
 export const product_names = [
   'Classic Cotton Tee',

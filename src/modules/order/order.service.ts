@@ -13,7 +13,7 @@ export class OrderService {
   ) {}
   //TODO: move this method to product modules when it is created (it is here for testing)
   public async getAllProducts(): Promise<ProductEntity[]> {
-    return await this.productRepository.find();
+    return await this.productRepository.findAll();
   }
 
   public async getAllOrders(): Promise<OrderEntity[]> {

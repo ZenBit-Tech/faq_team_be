@@ -23,6 +23,8 @@ import { ERouteName } from 'src/common/enums/route-name.enum';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
+import { UsersFilterDto } from 'src/modules/user/dto/filter-users.request.dto';
+import { UsersFilterResponseDto } from 'src/modules/user/dto/filter-users.response.dto';
 import { MakeReviewRequestDto } from 'src/modules/user/dto/make-review.request.dto';
 import { RateRequestDto } from 'src/modules/user/dto/rate-request.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
@@ -30,8 +32,6 @@ import { FollowService } from 'src/modules/user/services/follow.service';
 import { RateService } from 'src/modules/user/services/rate.service';
 import { ReviewService } from 'src/modules/user/services/review.service';
 import { UserService } from 'src/modules/user/services/user.service';
-
-import { UsersFilterDto } from './dto/filter-users.dto';
 
 @ApiTags('User')
 @Controller(ERouteName.USERS_ROUTE)
@@ -64,7 +64,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   async getAll(
     @Query() query: UsersFilterDto,
-  ): Promise<{ users: UserEntity[]; totalCount: number }> {
+  ): Promise<UsersFilterResponseDto> {
     return await this.userService.getAllUsers(query);
   }
 

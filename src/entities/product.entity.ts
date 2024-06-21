@@ -13,7 +13,7 @@ export class ProductEntity extends BaseEntity {
   @Column()
   product_name: string;
 
-  @Column()
+  @Column('longtext')
   description: string;
 
   @Column()
@@ -24,6 +24,15 @@ export class ProductEntity extends BaseEntity {
 
   @Column()
   category: string;
+
+  @Column()
+  color: string;
+
+  @Column()
+  size: string;
+
+  @Column()
+  style: string;
 
   @Column({ nullable: true })
   image: string;
