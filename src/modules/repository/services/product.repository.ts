@@ -16,7 +16,7 @@ export class ProductRepository extends Repository<ProductEntity> {
     dto: ProductsFilterDto,
   ): Promise<ProductsFilterResponseDto> {
     const {
-      page,
+      page = 1,
       limit,
       search,
       size,
@@ -26,7 +26,6 @@ export class ProductRepository extends Repository<ProductEntity> {
       max,
       order = ESort.ASC,
     } = dto;
-
     const queryBuilder = this.createQueryBuilder('product');
 
     if (search) {

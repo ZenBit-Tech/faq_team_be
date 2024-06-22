@@ -59,7 +59,7 @@ export class UserRepository extends Repository<UserEntity> {
   public async getAllUsers(
     dto: UsersFilterDto,
   ): Promise<UsersFilterResponseDto> {
-    const { page, limit, order = ESort.ASC, search = '', role } = dto;
+    const { page = 1, limit, order = ESort.ASC, search = '', role } = dto;
 
     const queryBuilder = this.createQueryBuilder('user')
       .where('user.is_deleted_by_admin = :isDeleted', { isDeleted: false })
