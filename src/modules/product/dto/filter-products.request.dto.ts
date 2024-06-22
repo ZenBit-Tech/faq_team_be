@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
 import { ESort } from 'src/common/enums/sort.enum';
 
@@ -40,8 +40,9 @@ export class ProductsFilterDto {
 
   @ApiProperty()
   @IsOptional()
+  @IsPositive()
   @IsNumber()
-  page: number = 1;
+  page: number;
 
   @ApiProperty()
   @IsOptional()

@@ -24,7 +24,7 @@ export class UsersFilterDto {
   @IsOptional()
   @IsPositive()
   @IsNumber()
-  page: number = 1;
+  page: number;
 
   @ApiProperty()
   @IsOptional()
