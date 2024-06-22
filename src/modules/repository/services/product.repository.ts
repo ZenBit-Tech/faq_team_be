@@ -12,16 +12,6 @@ export class ProductRepository extends Repository<ProductEntity> {
     super(ProductEntity, dataSource.manager);
   }
 
-  public async findAll() {
-    const qb = this.createQueryBuilder('product');
-    qb.leftJoin(
-      'product.owner',
-      'owner',
-      'product.vendor_id = owner.id',
-    ).addSelect(['owner.full_name', 'owner.id']);
-
-    return qb.getMany();
-  }
   public async getAllProducts(
     dto: ProductsFilterDto,
   ): Promise<ProductsFilterResponseDto> {

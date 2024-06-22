@@ -10,7 +10,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { ERouteName } from 'src/common/enums/route-name.enum';
 import { OrderEntity } from 'src/entities/order.entity';
-import { ProductEntity } from 'src/entities/product.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwtAuthGuard';
 import { OrderService } from 'src/modules/order/order.service';
 
@@ -18,15 +17,6 @@ import { OrderService } from 'src/modules/order/order.service';
 @Controller(ERouteName.ORDERS_ROUTE)
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
-
-  //TODO: move this route to product modules when it is created (it is here for testing)
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get(ERouteName.GET_PRODUCTS_ROUTE)
-  @HttpCode(HttpStatus.OK)
-  async getAllProducts(): Promise<ProductEntity[]> {
-    return await this.orderService.getAllProducts();
-  }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

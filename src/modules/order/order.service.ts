@@ -1,21 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 import { OrderEntity } from 'src/entities/order.entity';
-import { ProductEntity } from 'src/entities/product.entity';
 import { OrderRepository } from 'src/modules/repository/services/order.repository';
-import { ProductRepository } from 'src/modules/repository/services/product.repository';
 
 @Injectable()
 export class OrderService {
-  constructor(
-    private readonly productRepository: ProductRepository,
-    private readonly orderRepository: OrderRepository,
-  ) {}
-  //TODO: move this method to product modules when it is created (it is here for testing)
-  public async getAllProducts(): Promise<ProductEntity[]> {
-    return await this.productRepository.findAll();
-  }
-
+  constructor(private readonly orderRepository: OrderRepository) {}
   public async getAllOrders(): Promise<OrderEntity[]> {
     return await this.orderRepository.find();
   }
